@@ -425,7 +425,7 @@ It seems the algorithm clearly found an excellent solution. Of course, we made i
 
 When there are many dimensions, or many clusters, or few instances, EM can struggle to converge to the optimal solution. In such cases, we might need to reduce the difficulty of the task by limiting the number of parameters that the algorithm has to learn. One way to do this is to constraints the covariance matrices (limited the range of shapes and orientations the clusters can have) by setting the `covariance_type` hyperparameter to one of the following values:
 
--  `covariance_type="spherical"` : 
+- `covariance_type="spherical"` : 
 
   All clusters must be spherical, but can have different diameters (i.e., different variances)
 

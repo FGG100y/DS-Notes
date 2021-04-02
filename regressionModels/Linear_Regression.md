@@ -42,6 +42,7 @@ The point (73 inches, 198 pounds) is marked by a cross in figure 1 ( and the poi
     The regression line for y on x estimates the average value for y corresponding to each value of x.
 </p>
 
+
 Along the regression line, associated with each increase of one SD in height there is an increase of only 0.40 SDs in weight. Remember where the 0.40 comes from. It is the correlation between height and weight. NOTE that: Two different SDs are involved here: the SD of $x$, to gauge change in $x$; and the SD of $y$, to gauge changes in $y$.
 
 This way of using the correlation coefficient to estimate the average value of $y$ for each value of $x$ is called the **regression method**. The method can be stated as follows.
@@ -68,11 +69,12 @@ $$
 > \boxed{\text{Convert each variable to standard units.} \\
 > \text{The average of the products gives the correlation coefficient.}}
 > $$
-> 
+>
 > $$
 > \fbox{Convert each variable to standard units.
 > The average of the products gives the correlation coefficient.}
 > $$
+>
 > Recall that "Convert each variable to standard units" means **standardization**. Let $x = \{1, 3, 4, 5, 7 \}, y = \{5, 9, 7, 1, 13 \} $ be vectors of variables, the mean is given by
 > $$
 > \mu = \frac{1}{|a|} \sum_i a_i
@@ -137,6 +139,7 @@ His income should be $\$30000 - \$25000 = \$5000$. That is the intercept (figure
     Associated with a unit increase in x there is some average change in y. The slope of the regression line estimates this change. The formula for the slope is
 </p>
 
+
 $$
 {r \times SD\ \text{of y} \over SD\ \text{of x}}
 $$
@@ -144,6 +147,7 @@ $$
 <p style="text-align:justify;color:lightblue;">
     The intercept of the regression line is just the predicted value for y when x is 0.
 </p>
+
 
 ---
 
@@ -158,6 +162,7 @@ The regression line becomes unreliable when you are far from the center of the d
 <p style="text-align:justify;color:lightblue;">
     If you run an observational study, the regression line only describes the data that you see. The line cannot be relied on for predicting the results of interventions.
 </p>
+
 
 
 
@@ -177,6 +182,7 @@ The second problem, how to move the line around to minimize the r.m.s error, was
 <p style="text-align:center;color:lightblue;">
     Among all lines, the one that makes the smallest r.m.s error in predicting y form x is the regression line.
 </p>
+
 
 ---
 
@@ -702,7 +708,7 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 > Let $p_{model}(\mathbf{x}; \mathbf{\theta})$ be a parametric family of probability distribution over the same space indexed by $\mathbf{\theta}$. In other words, $p_{model}({x}; \mathbf{\theta})$ maps any configuration $x$ to a real number estimating the true probability $p_{data}({x})$.
 >
 > The maximum likelihood estimator for $\mathbf{\theta}$ is then defined as
->$$
+> $$
 > \begin{eqnarray}
 > \mathbf{\theta_{ML}} 
 > \tag{5.56}
@@ -732,7 +738,7 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 > -\mathbb{E}_{\mathbf{x} \sim \hat{p}_{data}} {[\text{log} \ \hat{p}_{data}(x)]},
 > $$
 > which is of course the same as the maximization in equation 5.59.
-> 
+>
 > Minimizing this KL divergence corresponds exactly to minimizing the cross-entropy between the distributions. Any loss consisting of a negative log-likelihood is a cross-entropy between the empirical distribution and the model distribution. For example, MSE is the cross-entropy between the empirical distribution and a Gaussian model.
 >
 > We can thus see maximum likelihood as an attempt to make the model distribution match the empirical distribution $\hat{p}_{data}$. While the optimal $\mathbf{\theta}$ is the same regardless of whatever we are maximizing the likelihood or minimizing the KL divergence, the values of the objective functions are different.
@@ -744,16 +750,16 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 > 关于KL散度
 >
 > KL散度(Kullback-Leibler divergence), 亦称相对熵(relative entropy)或信息散度(information divergence), 可用于度量两个概率分布之间的差异. 给定两个连续型概率分布$P$和$Q$, 二者之间的KL散度定义为
->$$
+> $$
 > \begin{equation} \label{eq_kld}
 > \tag{C.34}
 > KL(P||Q) = \int^{\infin}_{-\infin}p(x)\text{log}\frac{p(x)}{q(x)}\text{d}x,
 > \end{equation}
 > $$
 > 其中,$p(x)$和$q(x)$分别是$P$和$Q$的概率密度函数.
-> 
+>
 > KL散度满足非负性, 即
->$$
+> $$
 > \tag{C.35}
 > KL(P||Q) \geq 0,
 > $$
@@ -763,9 +769,9 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 > KL(P||Q) \neq KL(Q||P),
 > $$
 > 因此, KL散度不是一个度量(metric).
-> 
+>
 > 若将KL散度的定义($\ref{eq_kld}$)展开, 可得
->$$
+> $$
 > \begin{eqnarray}
 > 
 > KL(P||Q) 
@@ -775,7 +781,6 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 > \end{eqnarray}
 > $$
 > 其中$H(P)$为熵(entropy), $H(P,Q)$为交叉熵(cross-entropy).
-> 
 
 
 
@@ -911,14 +916,14 @@ All terms that do not include the parameter vector $w$ have been omitted; they a
   $$
   p(X = 1 | \mu) = \mu
   $$
-  
+
 - Bernoulli Distribution
   $$
   Bern(x | \mu) = \mu^x \cdot (1 - \mu)^{1 - x} \\
   \mathbf{E}[X] = \mu \\
   var(X) = \mu \cdot (1 - \mu)
   $$
-  
+
 - N coin flips: $X_1, \ldots, X_N$
   $$
   p(\Sigma_i X_i = m | N, \mu) = {N \choose m} \mu^m (1 - \mu)^{N - m} \\
@@ -930,7 +935,6 @@ All terms that do not include the parameter vector $w$ have been omitted; they a
   \mathbf{E}[\Sigma_i X_i] = N \mu \\
   var[\Sigma_i X_i] = N \mu (1 - \mu)
   $$
-  
 
 #### The Bias of a Coin
 
@@ -959,7 +963,9 @@ With these coin flips result: **[tail, head, tail, head, head]**, our estimate o
 #### MLE
 
 - Data: Observed set of $\alpha_H$ heads and $\alpha_T$ tails
+
 - Hypothesis: Coin flips follow a binomial distribution
+
 - Learning: Find the "best" $\theta$
 
   Maximum Likelihood Estimation: Choose $\theta$ to maximize probability of $D$ given $\theta$
@@ -1047,7 +1053,6 @@ What is a good prior for the bias in the coin flipping problem?
   &=& Beta(\alpha_H + \beta_H, \alpha_T + \beta_T)
   \end{eqnarray}
   $$
-  
 
 **MAP Estimation**
 
@@ -1076,7 +1081,6 @@ Suppose we have 5 coin flips all of which are heads,
   &\approx& \frac{\alpha_H}{\alpha_H + \alpha_T} \ (\text{for large number of observations})
   \end{eqnarray} 
   $$
-  
 
 #### Sample Complexity
 

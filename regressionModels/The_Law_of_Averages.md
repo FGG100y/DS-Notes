@@ -115,6 +115,7 @@ The formula for the expected value is a short-cut. It has two ingredients:
     </p>
 </div>
 
+
 To see the logic behind formula, go back to the example. The average of the box is
 $$
 {{1 + 1 + 1 + 5} \over 4} = 2
@@ -149,6 +150,7 @@ There is a formula to use in computing the SE for a sum of draws made at random 
     <p style="text-align: justify;color:#CE5937;">The square root law. When drawing at random with replacement from a box of numbered tickets, the standard error for the sum of the draws is
     </p>
 </div>
+
 
 $$
 \sqrt{\text{number of draws}}\ \times \ (\text{SD of box}).

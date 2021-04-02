@@ -133,23 +133,23 @@ $\mathsf{\text{grad_table}}[u^{(i)}] \leftarrow 1$
 
 
 >  A computational graph that results in repeated subexpressions when computing the gradient. Let $w \in \R$ be the input to the graph. We use the same function $f: \R \rightarrow \R$ as the operation that we apply at every step of a chain: $x = f(w), y = f(x), z = f(y)$. To compute $\frac{\partial z}{\partial w}$, we apply equation 6.44 and obtain:
-> $$
-> \begin{eqnarray}
-> \tag{6.50}
-> &&\frac{\partial z}{\partial w} \\
-> \tag{6.51}
-> &=& \frac{\partial z}{\partial y}\frac{\partial y}{\partial x}\frac{\partial x}{\partial w} \\
-> \tag{6.52}
-> &=& f'(y)f'(x)f'(w) \\
-> \tag{6.53}
-> &=& f'(f(f(w)))f'(f(w))f'(w).
-> \end{eqnarray}
-> $$
-> Equation 6.52 suggests an implementation in which we compute the value of $f(w)$ only once and store it in the variable $x$. This is the approach taken by the back-propagation algorithm. (Equation 6.53 is also a valid implementation of the chain rule and is useful when memory is limited)
+>  $$
+>  \begin{eqnarray}
+>  \tag{6.50}
+>  &&\frac{\partial z}{\partial w} \\
+>  \tag{6.51}
+>  &=& \frac{\partial z}{\partial y}\frac{\partial y}{\partial x}\frac{\partial x}{\partial w} \\
+>  \tag{6.52}
+>  &=& f'(y)f'(x)f'(w) \\
+>  \tag{6.53}
+>  &=& f'(f(f(w)))f'(f(w))f'(w).
+>  \end{eqnarray}
+>  $$
+>  Equation 6.52 suggests an implementation in which we compute the value of $f(w)$ only once and store it in the variable $x$. This is the approach taken by the back-propagation algorithm. (Equation 6.53 is also a valid implementation of the chain rule and is useful when memory is limited)
 >
-> ![backprop](./images/back-propagation.png)
+>  ![backprop](./images/back-propagation.png)
 >
-> Figure 6.10: An example of the symbol-to-symbol approach to computing derivatives. In this approach, the back-propagation algorithm does not need to ever access any actual specific numeric values. Instead, it adds nodes to a computational graph describing how to compute these derivatives. A generic graph evaluation engine can later compute the derivatives for any specific numeric values. (Left) In this example, we begin with a graph representing $z = f(f(f(w)))$. (Right) We run the back-propagation algorithm, instructing it to construct the graph for the expression corresponding to $\frac{\partial z}{\partial w}$. In this example, we do not explain how the back-propagation algorithm works. The purpose is only to illustrate what the desired result is: a computational graph with a symbolic description of the derivative.
+>  Figure 6.10: An example of the symbol-to-symbol approach to computing derivatives. In this approach, the back-propagation algorithm does not need to ever access any actual specific numeric values. Instead, it adds nodes to a computational graph describing how to compute these derivatives. A generic graph evaluation engine can later compute the derivatives for any specific numeric values. (Left) In this example, we begin with a graph representing $z = f(f(f(w)))$. (Right) We run the back-propagation algorithm, instructing it to construct the graph for the expression corresponding to $\frac{\partial z}{\partial w}$. In this example, we do not explain how the back-propagation algorithm works. The purpose is only to illustrate what the desired result is: a computational graph with a symbolic description of the derivative.
 
 ## 6.5.6 General Back-Propagation
 

@@ -157,7 +157,7 @@ When we perform multiple linear regression, we usually are interested in answeri
 ---
 
 1. Is at least one of the predictors $X_1, X_2, \ldots, X_p$ useful in predicting the response?
-2.  Do all the predictors help to explain $Y$, or is only a subset of the predictors useful?
+2. Do all the predictors help to explain $Y$, or is only a subset of the predictors useful?
 3. How well does the model fit the data?
 4. Given a set of predictor values, what response value should we predict, and how accurate is our prediction?
 

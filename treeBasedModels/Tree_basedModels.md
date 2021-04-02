@@ -12,12 +12,6 @@
 
 如果我们想要预测的是离散值，例如 “好瓜” “坏瓜”，此类学习任务称为 “分类(classification)”；如果要预测的是连续值， 例如西瓜的成熟度0.9，0.4，此类学习任务称为 “回归(regression)”。二分类(binary classification)任务中，通常令 $\mathcal{Y} = \{-1, +1 \}$ 或  $\mathcal{Y} = \{0, 1 \}$；对于多分类(multi-class classification), $|\mathcal{Y}| > 2$；对回归任务，$\mathcal{Y} = \R$，$\R$ 为实数集。
 
-
-
-[^1]: 由 $d$ 个属性张成的 $d$ 维空间中，每个示例都可以在这个空间中找到自己的坐标位置，每个空间中的点对应一个坐标向量，因此：一个示例就是一个“特征向量”（feature vector）。
-
-
-
 ## Decision Tree
 
 ### 决策树生成算法
@@ -84,7 +78,7 @@
 
 > 《The hundred-Page Machine Learning》
 >
-> ![build tree the 1st split](./images/looPagesML_dtree_build.png)
+> ![build tree the 1st split](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\looPagesML_dtree_build.png)
 >
 > The ID3 learning algorithm works as follows. Let $\cal{S}$ denotes a set of labeled examples. In the begining, the decision tree only has a start noed (root node) that contains all examples: $\mathcal{S} = \{(\mathbb{x}_i, y_i) \}^N_i$. Start with a constant model $f_{ID3}$ :
 > $$
@@ -122,7 +116,7 @@ $$
 
 $\color{Green}{\bold{例子}}$
 
-![xgs d2.0](./images/xgs_tree_dataset1.png)
+![xgs d2.0](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\xgs_tree_dataset1.png)
 
 以表4.1中的西瓜数据集2.0为例。该数据集包含17个训练样例，用以学习一棵能预测没有尝过的是不是好瓜的决策树。显然，分类的类别共两类（是好瓜，不是好瓜），$|\mathcal{Y}| = 2$。在决策树开始学习时，根结点包含 $D$ 中所有的样例，其中正例占 $p_1 = 8 / 17$ ，反例占  $p_1 = 9 / 17$。于是，根据式(4.1)可计算出根结点的信息熵为
 $$
@@ -155,7 +149,7 @@ $$
 $$
 显然，属性 “纹理” 的信息增益最大，于是它被选为划分属性。图4.3给出了基于 “纹理” 对根结点进行划分的结果，各分支结点所包含的样例子集显示在结点中。
 
-![tree first split](./images/xgs_tree1.png)
+![tree first split](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\xgs_tree1.png)
 
 然后，决策树学习算法将对每个分支结点做进一步划分。以图4.3中第一个分支结点（“纹理=清晰”）为例，该结点包含的样例集合 $D^1$ 中有编号为 ｛1，2，3，4，5，6，8，10，15｝的9个样例，可用属性集合为 ｛色泽，根蒂，敲声，脐部，触感｝[^2]。基于 $D^1$ 计算出各个属性的信息增益：
 $$
@@ -165,9 +159,9 @@ $$
 $$
 “根蒂”、“脐部”、“触感” 3个属性均取得最大的信息增益，可任选其中之一作为划分属性。类似的，对每个分支结点进行上述操作，最终得到的决策树如图4.4所示。
 
-![tree first split](./images/xgs_tree2.png)
+![tree first split](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\xgs_tree2.png)
 
-[^2]:  上一步的划分属性“纹理”，不再作为候选划分属性。
+
 
 #### 增益率
 
@@ -243,13 +237,9 @@ $$
 >
 > Decision Trees produce orthogonal decision boundaries (all splits are perpendicular to an axis), which makes them sensitive to trianing set rotation (The model on the right of figure 6-7 will not generalize well). Ony way to limit this problem is to use Principal Component Analysis (PCA), which often results in a better orientation of the training data.
 >
-> ![dtree instability](./images/hands-onML_dtree_instability.png)
+> ![dtree instability](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_dtree_instability.png)
 >
 > More generally, the main issue with Decision Trees is that they are very sensitive to small variations in the training data[^3]. Actually, since the training algorithm used by Sklearn is stochastic (means it randomly selects the set of features to evaluate at each node), it may produces very different models even on the same training data (unless you set the `random_state` hyperparameter).
-
-
-
-[^3]: Which is mainly due to the nature of how decision tree growed using greedy algorithm and easily overfiting.
 
 
 
@@ -293,10 +283,6 @@ $$
 
 
 
-[^4]: 可将划分点设为该属性在训练集中出现的不大于中位点的最大值。由此，决策树使用的划分点都出现在训练集中。
-
-
-
 **缺失值处理**
 
 现实任务中常会遇到不完整样本，即样本的某些属性值缺失。在属性数目较多的情形下，往往会有大量样本出现缺失值。如果简单地放弃不完整样本，仅使用无缺失值的样本进行学习，显然是对数据信息的极大浪费。
@@ -329,15 +315,15 @@ $$
 
 决策树所形成的分类边界有一个明显的特点：轴平行(axis-parallel)，即它的分类边界由若干个与坐标轴平行的分段组成。
 
-![data3a](./images/xgs_tree_dataset3a.png)
+![data3a](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\xgs_tree_dataset3a.png)
 
 以表4.5中的西瓜数据$3.0 \alpha$为例，将它作为训练集学习得图4.10所示的决策树，其分类边界如图4.11所示。
 
-![tree3a](./images/xgs_tree3a2.png)
+![tree3a](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\xgs_tree3a2.png)
 
 显然，分类边界的每一段都是与坐标轴平行的。这样的分类边界使得学习结果有较好的可解释性，因为每一段划分都直接对应了某个属性取值。但在学习任务的真实分类边界比较复杂时，必须使用很多段划分才能获得较好的近似，如图4.12所示；此时的决策树会相当复杂，由于需要进行大量属性测试，预测时间开销会很大。
 
-![tree3a3](./images/xgs_tree3a3.png)
+![tree3a3](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\xgs_tree3a3.png)
 
 如果能够使用斜的划分边界，如图4.12中的红色线段所示，则决策树模型将大为简化。
 
@@ -345,7 +331,7 @@ $$
 
 例如对西瓜数据$3.0 \alpha$，我们可以学得图4.13这样的多变量决策树，其分类边界如图4.14所示。
 
-![tree3a4](./images/xgs_tree3a4.png)
+![tree3a4](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\xgs_tree3a4.png)
 
 ### 阅读材料
 
@@ -355,8 +341,10 @@ $$
 
 有一些决策树学习算法可进行 “增量学习(incremental learning)”，即在接收到新样本后可对已学得的模型进行调整，而不用完全重新学习。主要机制是通过调整分支路径上的划分属性次序来对树进行部分重构，代表性算法有ID4[^14]、ID5R[^15]、ITI[^16]等。增量学习可有效降低每次接收到新样本后的训练时间开销，但多步增量学习后的模型会与基于全部数据训练而得的模型有较大差别。
 
-
-
+[^1]: 由 $d$ 个属性张成的 $d$ 维空间中，每个示例都可以在这个空间中找到自己的坐标位置，每个空间中的点对应一个坐标向量，因此：一个示例就是一个“特征向量”（feature vector）。
+[^2]: 上一步的划分属性“纹理”，不再作为候选划分属性。
+[^3]: Which is mainly due to the nature of how decision tree growed using greedy algorithm and easily overfiting.
+[^4]: 可将划分点设为该属性在训练集中出现的不大于中位点的最大值。由此，决策树使用的划分点都出现在训练集中。
 [^6]: 待补充。
 [^7]: [Mingers, 1989b]
 [^8]: [Raileanu and Stoffel, 2004]
@@ -382,7 +370,7 @@ $$
 
 给定一个训练数据集，一种可能的做法是对训练样本进行采样，产生出若干个不同的子集，再从每个数据子集中训练出一个基学习器。这样，由于训练数据不同，我们获得的基学习器可望具有比较大的差异。然而，为获得好的集成，我们同时还希望个体学习器不能太差。如果采样出的每个子集都完全不同，则意味着每个基学习器只用到了一小部分训练数据，甚至可能不足以进行有效学习，这就无法保证产出比较好的基学习器。为解决这个问题，我们可考虑使用互相有交叠的采样子集。
 
-![hard voting classifier](./images/hands-onML_ensemble_majority_vote.png)
+![hard voting classifier](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_majority_vote.png)
 
 *Figure 7-2. Hard voting classifier predictions. Copy from the book《hands-on Machine Learning with sklearn, Keras and tensorflow》*
 
@@ -430,7 +418,7 @@ Bagging 算法
 >
 > In other words, both bagging and pasting allow training instances to be sampled several times across multiple predictiors, but only bagging allows training instances to be sampled several times for the same predictor. This sampling and training process is represented in Figure 7-4.
 >
-> ![bagging pasting](./images/hands-onML_ensemble_bagging_pasting.png)
+> ![bagging pasting](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_bagging_pasting.png)
 >
 > Once all predictors are trained, the ensemble can make a prediction for a new instance by simply aggregating the predictions all predictors. The aggregation function is typically
 >
@@ -489,7 +477,7 @@ Bagging 算法
 >
 > For example, when training an AdaBoost classifier, the algorithm first train a base classifier (such as a Decision Tree) and uses it to make predictions on the train set. The algorithm then increase the relative weight of misclassified training instances. Then it trains a second classifier, using the updated weights, and again makes predictions on the training set, updates the instance weights, and so on (see Figure 7-7).
 >
-> ![adaboost](./images/hands-onML_ensemble_adaboost.png)
+> ![adaboost](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_adaboost.png)
 >
 > Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on their corresponding weighted training set.
 >
@@ -534,7 +522,7 @@ Bagging 算法
 >
 > 
 >
-> ![gbrt model fitting](./images/hands-onML_ensemble_gradient_boosting.png)
+> ![gbrt model fitting](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_gradient_boosting.png)
 >
 > The `learning_rate` hyperparameter scales the contribution of each tree. 
 >
@@ -631,7 +619,7 @@ Permutation importance for feature evaluation.
 
 The `estimator` is required to be a fitted estimator. `X` can be the data set used to train the estimator or a hold-out set. The permutation importance of a feature is calculated as follows.
 
-First, a baseline metric, defined by [scoring](#Scoring Parameter), is evaluated on a (potentially different) dataset defined by `X`. Next, a feature column from the validation set is permuted and the metric is evaluated again. 
+First, a baseline metric, defined by [scoring](#Scoring Parameter), is evaluated on a (potentially different) dataset defined by `X`. Next, a feature column from the validation set is permuted([How](####How-it-work)) and the metric is evaluated again. 
 
 The permutation importance is defined to be difference between the baseline metric and metric from permutating the feature column.
 
@@ -660,6 +648,21 @@ $$
 
 ---
 
+#### How it work
+
+Consider this: We want to predict a person's height when they become 20 years old, using data that is available at age 10. Our data includes useful features (height at age 10), features with little predictive power (socks owned), as well as some other features we won't focus on this explanation.
+
+**Permutation importance is calculated after a model has been fitted.** so we won't change the model or change what predictions we'd get for a given value of height, sock-count, etc.
+
+Instead we will ask the following question:
+
+<p style="text-align:left;color:blue;">
+    "if I randomly shuffle a single column of the validation set data, leaving the target (or lable) and all other columns in place, how would that affect the accuracy of predictions in that now-shuffled data?"
+</p>
+
+
+Randomly re-ordering a single column should cause less accuracy predictions, since the resulting data no longer corresponds to anything observed in the real world. Model accuracy especially suffers if we shuffle a column that the model relied on heavily for predictions. In this case, shuffling `height at age 10` would cause terrible predictions while shuffling `socks-owned` wouldn't sufffer nearly as much.
+
 ### Misleading values on strongly correlated features
 
 When two features are correlated and one of the feature is permuted, the model will still have access to the feature through its correlated feature. This will result in a lower importance value for both features, where they might actually be important.
@@ -676,7 +679,8 @@ One way to handle this is to cluster features that are correlated and only keep 
     "Random forests provide free cross-validation."
 </p>
 
-The `RandomForestClassifier` is trained using *bootstrap aggregation[^1]*, where each new tree is fit from a bootstrap sample of the training observations $z_i = (x_i, y_i)$. The out-of-bag (OOB) error is the average error for each $z_i$ calculated using predictions from the tress that do not contain $z_i$ in their respective bootstrap sample. This allows the `RandomForestClassifier` to be fit and validated whilst being trained.
+
+The `RandomForestClassifier` is trained using *bootstrap aggregation*, where each new tree is fit from a bootstrap sample of the training observations $z_i = (x_i, y_i)$. The out-of-bag (OOB) error is the average error for each $z_i$ calculated using predictions from the tress that do not contain $z_i$ in their respective bootstrap sample. This allows the `RandomForestClassifier` to be fit and validated whilst being trained.
 
 > By principle since it randomizes the variable selection during each tree split, it's not prone to overfit unlike other models. However if you want to use CV using nfolds in sklearn you can still use the concept of hold-out set such as `oob_score=True` which shows model performance with or without using CV.
 
@@ -684,15 +688,5 @@ The `RandomForestClassifier` is trained using *bootstrap aggregation[^1]*, where
 
 ### Plot the decision tree
 
-
-
-
-
-
-
-
-
-
-
-
+To be continue ...
 

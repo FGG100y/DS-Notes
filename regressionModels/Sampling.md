@@ -10,6 +10,7 @@
     Simple random sampling means drawing at random without replacement.
 </p>
 
+
 ---
 
 Most of the times, it just is not practical to take a simple random sample. Consequently, most survey organizations use a probability method called *multistage cluster sampling*.
@@ -91,6 +92,7 @@ Bias is often more serious problem than chance error, but methods for assessing 
     With a simple random sample, the expected value for the sample percentage equals the population percentage.
 </p>
 
+
 ---
 
 However, the sample percentage will not be exactly equal to its expected value -- it will be off by a chance error. How big is this error likely to be? The answer is given by the **standard error**.
@@ -113,6 +115,7 @@ Now 46 out of 100 is $46 \%$ and 5 out of 100 is $5 \%$. Therefore, the percenta
     To compute the SE for a percentage, first get the SE for the corresponding number; then convert to percent, relative to the size of the sample. As a cold mathematical formula,
 </p>
 
+
 $$
 \text{SE for percentage} = {\text{SE for number} \over \text{size of sample}} \times 100 \%.
 $$
@@ -120,6 +123,7 @@ $$
 <p style="text-align: justify;color:#CE5937;">
     Multiplying the size of a sample by some factor divides the SE for a percentage not by the whole factor -- but by its square root.
 </p>
+
 
 ---
 
@@ -181,6 +185,7 @@ The New Mexico poll is sampling one voter out of 600, while the Texas poll is sa
     When estimating percentages, it is the absolute size of the sample which determines accuracy, not the size relative to the population. This is true if the sample is only a small part of the population, which is the usual case.
 </p>
 
+
 ---
 
 In fact, the draws are made without replacement. However, the number of draws is just a tiny fraction of the number of tickets in the box. Taking the draws without replacement barely changes the composition of the box.
@@ -237,6 +242,7 @@ This calculation shows that his pollster’s estimate of $53\%$ is only likely t
 <p style="text-align: justify;color:#CE5937;">
     The bootstrap. When sampling from a 0-1 box whose composition is unknown, the SD of the box can be estimated by subsutituting the fractions of 0's and 1's in the sample for the unknown fractions in the box. The estimate is good when the sample is reasonably large.
 </p>
+
 
 ---
 
@@ -310,11 +316,13 @@ But there is a problem here.
     In the frequency theory, a chance represents the percentage of the time that something will happen.
 </p>
 
+
 No matter how many times you take stock of all the students registered at that university in the fall of 2005, the percentage who were living at home back then will not change. Either this percentage was between $75\%$ and $83\%$, or not. There really is no way to define the chance that the parameter will be in the interval from $75\%$ to $83\%$. That is why statisticians have to turn the problem around slightly. They realize that the chances are in the sampling procedure, not in the parameter. And they use the new word “confidence” to remind you of this.
 
 <p style="text-align: center;color:#CE5937;">
     The chances are in the sampling procedure, not in the parameter.
 </p>
+
 
 The confidence level of $95\%$ says something about the sampling procedure, and we are going to see what that is. 
 
@@ -324,6 +332,7 @@ The confidence level of $95\%$ says something about the sampling procedure, and 
 <p style="text-align: justify;color:#CE5937;">
     A confidence interval is used when estimating an unknown parameter from sample data. The interval gives a range for the parameter, and a condifence level that the range covers the true value.
 </p>
+
 
 **Of course, investigators usually cannot tell whether their particular interval covers the population percentage, because they do not know that parameter**. But they are using a procedure that works $95\%$ of the time: take a simple random sample, and go 2 SEs either way from the sample percentage. It is as if their interval was drawn at random from a box of intervals, where $95\%$ cover the parameter and only $5\%$ are lemons.
 
@@ -343,6 +352,7 @@ of the intervals cover the percentage of red marbles in the box, others fail.
     A sample precentage will be off the population percentage, due to chance error. The SE tells you the likely size of the amount off.
 </p>
 
+
 Confidence levels were introduced to make this idea more quantitative.
 
 ### WARNING
@@ -350,6 +360,7 @@ Confidence levels were introduced to make this idea more quantitative.
 <p style="text-align: justify;color:#CE5937;">
     The formulas for simple random samples may not apply to other kinds of samples.
 </p>
+
 
 Here is the reason. Logically, the procedures in this chapter all come out of the square root law[^2]. When the size of the sample is small relative to the size of the population, taking a simple random sample is just about the same as drawing at random with replacement from a box—the basic situation to which the square root law applies. 
 

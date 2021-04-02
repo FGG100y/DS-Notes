@@ -11,6 +11,7 @@ When a chance process generates a number, the expected value and standard error 
 <p style="text-align: justify;color:#CE5937";>A probability histogram is a new kind of graph. This graph represents chance, not data. A probability histogram represents chance by area.
 </p>
 
+
 Figure 1. The computer simulated rolling a pair of dice and finding the total number of spots (Adding the numbers). The ideal or probability histogram for the total number of spots when a pair of dice are rolled (Converged from empirical histograms).
 
 ![probability histogram](./images/stats_probability_histogram.png)
@@ -79,6 +80,7 @@ There are plenty more where those came from. But the pattern is always the same.
 <p style="text-align: justify;color:#CE5937";>The Central Limit Theorem. When drawing at random with replacement from a box, the probability histogram for the sum will follow the normal curve, even if the contents of the box do not. The histogram must be put into standard units, and the number of draws must be reasonably large.
 </p>
 
+
 When the probability histogram does follow the normal curve, it can be summarized by the **expected value** and **standard error**. For instance, suppose you had to plot such a histogram without any further information. In standard units you can do it, at least to a first approximation:
 
 ![probability histogram](./images/stats_probability_histogram4.png)
@@ -87,6 +89,7 @@ To finish the picture, you have to translate the standard units back into origin
 
 <p style="text-align: justify;color:#CE5937";>The expected value pins the center of the probability histogram to the horizontal axis, and the standard error fixes its spread.
 </p>
+
 
 According to the **square root law**, the expected value and standard error for a sum can be computed from
 

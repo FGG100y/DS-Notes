@@ -9,6 +9,7 @@ The basic situation is that a series of *repeated measurements* are made on some
 </p>
 
 
+
 In the model, it is the SD of the box which gives the likely size of the chance errors. Usually, this SD is unknown and must be estimated from the data.
 
 Take the 100 measurements on NB 10[^1], for example. According to the model, each measurement is around the exact weight, but it is off by a draw from the error box:
@@ -25,6 +26,7 @@ With the NB 10 data, the SD of the draws would be a fine estimate for the SD of 
 <p style="text-align:justify;color:lightblue">
     When Gauss model applies, the SD of series of repeated measurements can be used to estimate the SD of the error box. The estimate is good when there are enough measurements.
 </p>
+
 
 There may be another way to get at the SD of the error box. When there is a lot of experience with the measurement process, it is better to estimate the SD from all the past data rather than a few current measurements. The reason: the error box belongs to the measurement process, not the thing being measured.
 
@@ -54,6 +56,7 @@ The chance errors are like draws from a box; their average is like the average o
     The implicit assumption is that the data are like the results of drawing from a box.<br>
     Statistical inference can be justified by putting up an explicit chance model for the data. No box, no inference.
 </p>
+
 
 
 The *descriptive statistics* -- drawing diagrams or calculating numbers which summarize data and bring out the salient features. Such techniques can be used very generally, because they do not involve any hidden assumptions about where the data came from. For statistical inference, however, models are basic.
