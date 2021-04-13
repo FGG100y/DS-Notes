@@ -1,3 +1,13 @@
+
+```html
+**Important Note**:
+
+Almost all the contents (text, images) are came from these great books and
+online resources:
+
+* Statistics, by David Freeman, Robert Pisani, and Roger Perves
+```
+
 ## The Normal Approximation for Probability Histograms
 
 > Everybody believes in the "normal approximation", the experimenters because they think it is a mathematical theorem, the mathematicians because they think it is an experimental fact.

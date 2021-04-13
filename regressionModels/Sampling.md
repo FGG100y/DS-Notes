@@ -1,3 +1,14 @@
+
+
+```html
+**Important Note**:
+
+Almost all the contents (text, images) are came from these great books and
+online resources:
+
+* Statistics, by David Freeman, Robert Pisani, and Roger Perves
+```
+
 # Sampling
 
 ## Sample Surveys

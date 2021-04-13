@@ -1,3 +1,10 @@
+
+```html
+注明：
+原理部分的内容均来自周志华的西瓜书，真正的大师之作。
+其他内容来自开源包文档、开源电子书、ipynb文档等。
+```
+
 ## 贝叶斯网
 
 贝叶斯网(Bayesian network)亦称“信念网(belief network)”，它借助有向无环图(Directed Acyclic Graph, DAG)来刻画属性之间的依赖关系，并使用条件概率表(Conditional Probability Table, CPT)来描述属性的联合概率分布。

@@ -1,3 +1,13 @@
+
+```html
+**Important Note**:
+
+Almost all the contents (text, images) are came from these great books and
+online resources:
+
+* Statistics, by David Freeman, Robert Pisani, and Roger Perves
+```
+
 ## The Law of Average
 
 With a large number of tosses (a coin), the size of the difference between the number of heads and the expected number is likely to be quite large in absolute terms. But compared to the number of tosses, the difference is likely to be quite small. That's the law of average.

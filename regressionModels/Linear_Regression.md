@@ -1,6 +1,26 @@
 [TOC]
 
 
+```html
+**Important Note**:
+
+Almost all the contents (text, images) are came from these great books and
+online resources:
+
+* Statistics, by David Freeman, Robert Pisani, and Roger Perves
+
+* 统计学, David Freeman $et.al$ 著，魏宗舒 等译，中国统计出版社
+
+* 机器学习 (又叫作：西瓜书), 周志华 著
+
+* An Introduction to Statistical Learning, by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani
+
+* Deep Learning, a.k.a, the flower book, by Ian Goodfellow, Yoshua Bengio, and Aaron Courville
+
+* Introduction to Machine Learning, Barnabas Poczos, Aarti Singh, CMU-10701
+
+* Bayesian Methods, Nicholas Ruozzi, UT-DALLAS
+```
 
 <h1 style="text-align: center;">Linear Regression</h1>
 
@@ -182,8 +202,6 @@ The second problem, how to move the line around to minimize the r.m.s error, was
 <p style="text-align:center;color:lightblue;">
     Among all lines, the one that makes the smallest r.m.s error in predicting y form x is the regression line.
 </p>
-
-
 ---
 
 > Recall that:
@@ -289,15 +307,15 @@ Simple linear regression[^3] is a useful approach for predicting a response on t
 Instead of fitting a separate simple linear regression model for each predictor, a better approach is to extend the simple linear regression model[^5] so that it can directly accommodate multiple predictors. We can do this by giving each predictor a separate slope coefficient in a single model. In general, suppose we have $p$ distinct predictors. Then the multiple linear regression model takes the form
 $$
 \tag{3.19}
-\label{mlr}
+\label{eq:mlr}
 Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots +  + \beta_p X_p + \epsilon
 $$
 where $X_j$ represents the $j$-th predictor and $\beta_j$ quantifies the association between that variable and the response. We interpret $\beta_j$ as the *average* effect on $Y$ of a unit increase in $X_j$, **holding all other predictors fixed**[^6].
 
-As was the case in the simple linear regression setting, the regression coefficients $\beta_0, \beta_1, \ldots, \beta_p$ in ($\ref{mlr}$) are unknown, and must be estimated. Given estimates $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$, we can make predictions using the formula
+As was the case in the simple linear regression setting, the regression coefficients $\beta_0, \beta_1, \ldots, \beta_p$ in ($\ref{eq:mlr}$) are unknown, and must be estimated. Given estimates $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$, we can make predictions using the formula
 $$
 \tag{3.21}
-\label{mlrpred}
+\label{eq:mlrpred}
 \hat{y} = \hat{\beta_0} + \hat{\beta_1} x_1 + \hat{\beta_2} x_2 + \cdots  + \hat{\beta_p} x_p.
 $$
 Then parameters are estimated using the same **least squares** approach that we saw in the context of simple linear regression. We choose $\beta_0, \beta_1, \ldots, \beta_p$ to minimize the **sum of squared residuals**
@@ -305,11 +323,11 @@ $$
 \begin{eqnarray}
 RSS 
 &=& \sum^n_{i=1}(y_i - \hat{y}_i)^2 \\
-\tag{3.22} \label{rss}
+\tag{3.22} \label{eq:rss}
 &=& \sum^n_{i=1} \big( y_i - (\hat{\beta_0} + \hat{\beta_1} x_1 + \hat{\beta_2} x_2 + \cdots  + \hat{\beta_p} x_p) \big)^2
 \end{eqnarray}
 $$
-The values $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$ that minimize ($\ref{rss}$) are the multiple least squares regression coefficient estimates. Unlike the simple linear regression coefficient estimation (the Python code block in previous section), the multiple regression coefficient estimates have somewhat complicated forms that are most easily represented using matrix algebra (see detail in section of Normal equation).
+The values $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$ that minimize ($\ref{eq:rss}$) are the multiple least squares regression coefficient estimates. Unlike the simple linear regression coefficient estimation (the Python code block in previous section), the multiple regression coefficient estimates have somewhat complicated forms that are most easily represented using matrix algebra (see detail in section of Normal equation).
 
 When we perform multiple linear regression, we usually are interested in answering a few important questions.
 
@@ -362,10 +380,10 @@ H_0 = \beta_{p-q+1} = \beta_{p-q+2} = \cdots = \beta_{p} = 0,
 $$
 where for convenience we have put the variables chosen for omission at the end of the list. In this case we fit a second model that uses all the variables except those last $q$. Suppose that the residual sum of squares for that model is $RSS_0$. Then the appropriate F-statistic is
 $$
-\tag{3.24} \label{ftest2}
+\tag{3.24} \label{eq:ftest2}
 F = \frac{(RSS_0 - RSS) / q}{RSS / (n - p -1)}.
 $$
-For each individual predictor a t-statistic and a p-value can be obtain, these statistics provide information about whether each individual predictor is related to the response, after adjusting for the other predictors. It turns out that each of these are exactly equivalent to the F-test that omits that single variable from the model, leaving all the others in (means $q=1$ in equation $\ref{ftest2}$).  So it reports the *partial effect* of adding that variable to the model.
+For each individual predictor a t-statistic and a p-value can be obtain, these statistics provide information about whether each individual predictor is related to the response, after adjusting for the other predictors. It turns out that each of these are exactly equivalent to the F-test that omits that single variable from the model, leaving all the others in (means $q=1$ in equation $\ref{eq:ftest2}$).  So it reports the *partial effect* of adding that variable to the model.
 
 Given these individual p-values for each variable, why do we need to look at the over F-statistic? After all, it seems likely that if any one of the p-values for the individual variables is very small, then *at least one of the predictors is related to the response*. However, this logic is flawed, especially when the number of predictors $p$ is large.
 
@@ -411,7 +429,7 @@ R^2
 
 \end{eqnarray}
 $$
-where ($\bar{y} = {1 \over n} \sum^n_{i=1} y_i$) is the sample mean, $\hat{y}$ is defined in ($\ref{mlrpred}$).
+where ($\bar{y} = {1 \over n} \sum^n_{i=1} y_i$) is the sample mean, $\hat{y}$ is defined in ($\ref{eq:mlrpred}$).
 
 An $R^2$ value close to 1 indicates that the model explains a large portion of the variance in the response variable. It turns out that $R^2$ will always increase when more variables are added to the model, even they are only weakly associated with the response. This is due to the fact that with more variable to the least squares equations must allow us to fit the training data more accurately (though not necessarily the testing data, a.k.a., over fitting).
 
@@ -424,11 +442,11 @@ Thus model with more variables can have higher $RSE$ if the decrease in $RSS$ is
 
 #### Four: Prediction
 
-Once we have fit the multiple regression model, it is straightforward to apply the fitted model $\hat{y} = \hat{f}(X) = \hat{\beta} X$ (a more verbose version see $\ref{mlrpred}$) in order to predict the response based on the values of the predictors. However, there are three sorts of uncertainty associated with this prediction.
+Once we have fit the multiple regression model, it is straightforward to apply the fitted model $\hat{y} = \hat{f}(X) = \hat{\beta} X$ (a more verbose version see $\ref{eq:mlrpred}$) in order to predict the response based on the values of the predictors. However, there are three sorts of uncertainty associated with this prediction.
 
 1. The coefficient estimate is the least squares estimation of the true coefficient which is unknown. The inaccuracy in the coefficient estimates is related to the *reducible error*[^9]. We can compute a **confidence interval** in order to determine how close $\hat{y}$ will be to $f(X)$.
 2. In practice assuming a linear model for $f(X)$ is almost always an approximation of reality, so if the true pattern is non-linear, there is an additional reducible error called *model bias*.
-3. Even if we knew $f(X)$ -- that is, we knew the true value of $\beta$ -- the response value cannot be predicted perfectly, because of the random error $\epsilon$ in the model ($\ref{mlrpred}$), this is the *irreducible error*.
+3. Even if we knew $f(X)$ -- that is, we knew the true value of $\beta$ -- the response value cannot be predicted perfectly, because of the random error $\epsilon$ in the model ($\ref{eq:mlrpred}$), this is the *irreducible error*.
 
 
 
@@ -449,6 +467,8 @@ Once we have fit the multiple regression model, it is straightforward to apply t
 Linear regression is of course an extremely simple and limited learning algorithm, but it provides an example of how a learning algorithm can work.
 
 ### Normal Equation
+
+* from the Deep Learning, a.k.a, the flower book
 
 The goal is to build a system that can take a vector $x \in \mathbb{R^n}$ as input and predict the value of a scalar $y \in \mathbb{R}$ as its output.  The output of linear regression is a linear function of the input. Let $\hat{y}$ be the value that our model predicts $y$ should take on. We define the output to be
 $$
@@ -576,17 +596,17 @@ Algorithm 4.1 An algorithm to minimize $f(x) = \frac{1}{2}||Ax - b||^2_2$ with r
 
 
 
-> 关于梯度下降法(Gradient Descent)
+> 关于梯度下降法(Gradient Descent) (来自：《西瓜书》)
 >
 > 梯度下降法是一种常用的一阶(first-order)优化方法, 是求解无约束优化问题最简单,最经典的方法之一.
 >
 > 考虑无约束优化问题$min_x f(x)$,其中$f(x)$为连续可微函数.若能构造一个序列$x^0, x^1, x^2, \ldots$ 满足
 > $$
 > \tag{B.15}
-> \label{eq_ngd}
+> \label{eq:ngd}
 > f(x^{(t+1)}) < f(x^{(t)}), t = 0,1,2,\ldots
 > $$
-> 则不断执行该过程即可收敛到局部极小点.欲满足式($\ref{eq_ngd}$),根据泰勒展式有
+> 则不断执行该过程即可收敛到局部极小点.欲满足式($\ref{eq:ngd}$),根据泰勒展式有
 > $$
 > \tag{B.16}
 > f(x + \Delta x) \simeq f(x) + \Delta x^{\mathsf{T}} \nabla f(x)
@@ -602,7 +622,7 @@ Algorithm 4.1 An algorithm to minimize $f(x) = \frac{1}{2}||Ax - b||^2_2$ with r
 >
 > 当目标函数$f(x)$二阶连续可微时,可将式($B.16$)替换成更为精确的二阶泰勒展式,这样就得到了牛顿法(Newton's method).牛顿法是典型的二阶方法,其迭代轮数远小于梯度下降法.但牛顿法使用了二阶导数$\nabla^2 f(x)$ (second derivative),其每轮迭代中涉及到海森矩阵(Hessian matrix)的求逆,计算复杂度相当高,尤其在高维问题中几乎不可行.其次,牛顿法仅适用于附近点有局部极小点的情况(也就是,海森矩阵为正定矩阵,也就是海森矩阵所有的特征值都是正数),若附近点是鞍点(saddle point)则牛顿法失效.然而,梯度下降却不会被鞍点困住.若能以较低的计算代价寻找海森矩阵的近似逆矩阵,则可以显著降低计算开销,这就是拟牛顿法(quai-Newton method).
 
-### Newton's method
+### Newton's method 
 
 Sometimes we need to find all the partial derivatives of a function whose input and output are both vectors. The matrix containing all such partial derivatives is known as a **Jacobian matrix**. Specifically, if we have a function $f: \mathbb{R}^m \rightarrow \mathbb{R}^n$, then the Jacobian matrix $\mathbf{J} \in \mathbb{R}^{m \times n}$ of $f$ is defined such that $J_{i, j} = \frac{\partial}{\partial x_j}f(x)_i$.
 
@@ -685,8 +705,8 @@ To derive the same linear regression algorithm we obtained before, we **define**
 Since the examples are assumed to be i.i.d., the conditional log-likelihood is given by 
 $$
 \begin{split}
-&\sum^m_{i=1} log \ p(y^{(i)}|x^{(i)}; \theta) \\
-&= -m \ log \ \sigma - \frac{m}{2} log(2 \pi) - \sum^m_{i=1} \frac{||\hat{y}^{(i)} - {y}^{(i)}||^2}{2 \sigma^2},
+&\sum^m_{i=1} \text{log} \ p(y^{(i)}|x^{(i)}; \theta) \\
+&= -m \ \text{log} \ \sigma - \frac{m}{2} \text{log}(2 \pi) - \sum^m_{i=1} \frac{||\hat{y}^{(i)} - {y}^{(i)}||^2}{2 \sigma^2},
 \end{split}
 $$
 where $\hat{y}^{(i)}$ is the output of the linear regression on the $i$-th input $x^{(i)}$ and m is the number of the training examples. Comparing the log-likelihood with the mean squared error,
@@ -747,11 +767,11 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 >
 > Maximum likelihood thus becomes minimization of the negative log-likelihood (NLL), or equivalently, minimization of the cross-entropy.
 >
-> 关于KL散度
+> 关于KL散度 (来自：《西瓜书》)
 >
 > KL散度(Kullback-Leibler divergence), 亦称相对熵(relative entropy)或信息散度(information divergence), 可用于度量两个概率分布之间的差异. 给定两个连续型概率分布$P$和$Q$, 二者之间的KL散度定义为
 > $$
-> \begin{equation} \label{eq_kld}
+> \begin{equation} \label{eq:kld}
 > \tag{C.34}
 > KL(P||Q) = \int^{\infin}_{-\infin}p(x)\text{log}\frac{p(x)}{q(x)}\text{d}x,
 > \end{equation}
@@ -770,7 +790,7 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 > $$
 > 因此, KL散度不是一个度量(metric).
 >
-> 若将KL散度的定义($\ref{eq_kld}$)展开, 可得
+> 若将KL散度的定义($\ref{eq:kld}$)展开, 可得
 > $$
 > \begin{eqnarray}
 > 
@@ -1013,7 +1033,8 @@ $$
 \begin{eqnarray}
 \tag{L1}
 p(\theta | D) = \frac{p(D | \theta) \ p(\theta)}{p(D)} \\
-\tag{L2} \label{eq_map}
+\\
+\tag{L2} \label{eq:map}
 \Rightarrow p(\theta | D) \varpropto p(D | \theta) \ p(\theta)
 \end{eqnarray}
 $$
@@ -1064,7 +1085,7 @@ The only difference between $\theta_{MLE}$ and $\theta_{MAP}$ is that one assume
 
 > Recall that:
 >
-> With uniform prior $p(\theta) \varpropto 1$, according to $\ref{eq_map}$, the posterior $p(\theta | D) \varpropto p(D | \theta)$.
+> With uniform prior $p(\theta) \varpropto 1$, according to $\ref{eq:map}$, the posterior $p(\theta | D) \varpropto p(D | \theta)$.
 
 Suppose we have 5 coin flips all of which are heads,
 

@@ -1,6 +1,6 @@
 # [Deep Forest](https://arxiv.org/abs/1702.08835) 
 
-
+* online paper, follow the link to all the details.
 
 > In this paper, we extend our preliminary study which proposes the [gcForest]() (multi-Grained Cascade Forest) approach for constructing deep forest, a non-NN style deep model. This is a novel decision tree ensemble, with a cascade structure which enables representation learning by forests. Its representational learning ability can be further enhanced by multi-grained scanning, potentially enabling gcForest to be contextual or structural aware. The cascade levels can be automatically determined such that the model complexity can be determined in a data-dependent way rather than manually designed before training; this enables gcForest to work well even on small-scale data, and enables users to control training costs according to computational resource available. Moreover, the gcForest has much fewer hyper-parameters than DNNs. Even better news is that its performance is quite robust to hyper-parameter settings; our experiments show that in most cases, it is able to get excellent performance by using the default setting, even across different data from different domains.
 
