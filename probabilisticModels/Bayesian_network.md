@@ -118,7 +118,7 @@ s(B | D) = f(\theta)|B| - LL(B | D),
 $$
 其中，$|B|$ 是贝叶斯网的参数个数；$f(\theta)$ 表示描述每个参数 $\theta$ 所需的字节数；而
 $$
-\tag{7.29} \label{eq:bn_ll}
+\tag{7.29} \label{eq:loglikelyhood}
 LL(B | D) = \sum^m_{i=1} \text{log} P_B(x_i)
 $$
 是贝叶斯网 $B$ 的对数似然。显然，式(**7.28**)的第一项是计算编码贝叶斯网 $B$ 所需的字节数，第二项是计算 $B$ 所对应的概率分布 $P_B$ 需要多少字节来描述 $D$ . 于是，学习任务就转化为一个优化任务，即寻找一个贝叶斯网 $B$ 使得评分函数 $s(B | D)$ 最小。
@@ -137,7 +137,7 @@ $$
 
 - 若 $f(\theta) = 0$，即不计算对网络进行编码的长度，则评分函数退化为负对数似然，相应的，学习任务退化为极大似然估计。
 
-不难发现，若贝叶斯网 $B = \langle G, \Theta \rangle$ 的网络结构 $G$ 固定，则评分函数 $s(B | D)$ 的第一项为常数。此时，最小化 $s(B | D)$ 等价于对参数 $\Theta$ 的极大似然估计。由式($\ref{eq:bn_union_proba}$) 和式($\ref{eq:bn_ll}$)可知，参数 $\theta_{x_i | \pi_i}$ 能直接在训练数据 $D$ 上通过经验估计获得，即
+不难发现，若贝叶斯网 $B = \langle G, \Theta \rangle$ 的网络结构 $G$ 固定，则评分函数 $s(B | D)$ 的第一项为常数。此时，最小化 $s(B | D)$ 等价于对参数 $\Theta$ 的极大似然估计。由式($\ref{eq:bn_union_proba}$) 和式($\ref{eq:loglikelyhood}$)可知，参数 $\theta_{x_i | \pi_i}$ 能直接在训练数据 $D$ 上通过经验估计获得，即
 $$
 \tag{7.32}
 \theta_{x_i | \pi_i} = \hat{P}_D(x_i | \pi_i),
