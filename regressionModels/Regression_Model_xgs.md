@@ -2,7 +2,8 @@
 
 ```html
 注明：
-所有内容均来自周志华的西瓜书，真正的大师之作。
+框架内容均来自周志华的西瓜书，真正的大师之作。
+其他添补内容均单独注释引用源。
 ```
 
 ## 回归模型 (Regression Model)
@@ -55,7 +56,7 @@ $$
 
 
 
-求解 $w$ 和 $b$ 使得 $E_{(w,b)} = \sum^m_{i=1} (y_i - wx_i - b)^2$ 最小化的过程，称为线性回归模型的最小二乘 “参数估计(parameter estimation)” 。我们可将 $E_{(w,b)}$ 分别对 $w$ 和 $b$ 求导[^2]，得到
+求解 $w$ 和 $b$ 使得 $E_{(w,b)} = \sum^m_{i=1} (y_i - wx_i - b)^2$ 最小化的过程，称为线性回归模型的最小二乘 “参数估计(parameter estimation)” 。我们可将 $E_{(w,b)}$ 分别对 $w$ 和 $b$ 求导，得到
 $$
 \begin{eqnarray}
 \tag{3.5}
@@ -67,7 +68,7 @@ $$
 &=& 2 \bigg(mb - \sum^m_{i=1} (y_i - wx_i) \bigg),
 \end{eqnarray}
 $$
-然后令式3.5和式3.6分别为零，可得到 $w$ 和 $b$ 最优解的闭式(closed-form)解
+然后令式3.5和式3.6分别为零[^2]，可得到 $w$ 和 $b$ 最优解的闭式(closed-form)解
 $$
 \begin{eqnarray}
 \tag{3.7}
@@ -78,6 +79,113 @@ b &=& {1 \over m} \sum^m_{i=1} (y_i - wx_i)
 \end{eqnarray}
 $$
 其中，$\bar{x} = {1 \over m} \sum^m_{i=1}x_i$ 为 $x$ 的均值。
+
+> The *closed-form* : What and How? 
+>
+> All the details following are quoted from [The Method of Least Square](https://web.williams.edu/Mathematics/sjmiller/public_html/BrownClasses/54/handouts/MethodLeastSquares.pdf) .
+>
+> Differentiating $E_{(w,b)}$ yields
+> $$
+> \begin{eqnarray}
+> 
+> \frac{\partial E_{(w,b)}}{\partial w}
+> &=& \sum^m_{i=1} 2 (y_i - (wx_i + b)) \cdot (-x_i), \\
+> \\
+> \tag{a3.12}
+> \frac{\partial E_{(w,b)}}{\partial b}
+> &=& \sum^m_{i=1} 2 (y_i - (wx_i + b)) \cdot 1.
+> \end{eqnarray}
+> $$
+> Setting the partial derivatives to $0$ (and dividing by 2) yields
+> $$
+> \begin{eqnarray}
+> 
+> \sum^m_{i=1} (y_i - (wx_i + b)) \cdot x_i
+> &=& 0, \\
+> \\
+> \tag{a3.13}
+> \sum^m_{i=1} (y_i - (wx_i + b))
+> &=& 0.
+> \end{eqnarray}
+> $$
+> We may rewrite these equations as
+> $$
+> \begin{eqnarray}
+> 
+> \bigg(\sum^m_{i=1} x_i^2 \bigg)w + \bigg(\sum^m_{i=1} x_i \bigg)b
+> &=& \sum^m_{i=1} x_i y_i, \\
+> \\
+> \tag{a3.14}
+> \bigg(\sum^m_{i=1} x_i \bigg)w + \bigg(\sum^m_{i=1} 1 \bigg)b
+> &=& \sum^m_{i=1} y_i.
+> \end{eqnarray}
+> $$
+> Turns these to the following matrix equation:
+> $$
+> \tag{a3.15}
+> \begin{pmatrix}
+> 	\sum^m_{i=1}x_i^2 	&\sum^m_{i=1}x_i \\
+> 	\sum^m_{i=1}x_i 	&\sum^m_{i=1}1 
+> \end{pmatrix}
+> \begin{pmatrix}
+> 	w \\
+> 	b 
+> \end{pmatrix}
+> =
+> \begin{pmatrix}
+> 	\sum^m_{i=1}x_i y_i \\
+> 	\sum^m_{i=1}y_i 
+> \end{pmatrix}
+> $$
+> We will show the matrix is invertible, which implies
+> $$
+> \tag{a3.16}
+> 
+> \begin{pmatrix}
+> 	w \\
+> 	b 
+> \end{pmatrix}
+> =
+> \begin{pmatrix}
+> 	\sum^m_{i=1}x_i^2 	&\sum^m_{i=1}x_i \\
+> 	\sum^m_{i=1}x_i 	&\sum^m_{i=1}1 
+> \end{pmatrix}^{-1}
+> \begin{pmatrix}
+> 	\sum^m_{i=1}x_i y_i \\
+> 	\sum^m_{i=1}y_i 
+> \end{pmatrix}
+> $$
+> Denote the matrix by $M$. The determinant of $M$ is
+> $$
+> \tag{a3.17}
+> 
+> \det{M} = 
+> {\sum^m_{i=1} x_i^2 \cdot \sum^m_{i=1} 1} - {\sum^m_{i=1} x_i \cdot \sum^m_{i=1} x_i}.
+> $$
+> As we know that
+> $$
+> \tag{a3.18}
+> \bar{x} = {1 \over m} \sum^m_{i=1} x_i,
+> $$
+> we find that
+> $$
+> \tag{a3.19}
+> \begin{eqnarray}
+> 	\det{M}
+> 	&=& m \sum^m_{i=1} x_i^2 - (m \bar{x})^2 \\
+> 	&=& m^2 \bigg({1 \over m}\sum^m_{i=1} x_i^2 - \bar{x}^2 \bigg) \\
+> 	&=& m^2 \cdot {1 \over m}\sum^m_{i=1}(x_i - \bar{x})^2,
+> \end{eqnarray}
+> $$
+> where the last equality follows from simple algebra. Thus, as long as all the $x_i$ are not equal, $\det{M}$ will be non-zero and $M$  will be invertible.
+>
+> ---
+>
+> **Thus we find that, so long as the $x$'s are not all equal, the best fit values of $w$ and $b$ are obtained by solving a linear system of equations; the solution is given in (3.16).**
+>
+> ---
+>
+> The quote end.
 
 #### 多元线性回归
 
@@ -240,7 +348,7 @@ $$
 \tag{3.22}
 \text{ln}{p(y = 1 |x) \over p(y = 0 |x)} = w^{\sf{T}}x + b
 $$
-显然有（也就是可以构造出）[^11]
+显然有（也就是可以构造出）[^11][^14][^15]
 $$
 \begin{eqnarray}
 \tag{3.23}
@@ -278,7 +386,10 @@ $$
 
 
 
-[^11]: 将式3.23比上式3.24再取自然对数，即可得到式3.22.
+[^11]: 将式3.23比上式3.24再取自然对数，即可得到式3.22. 可是，用来构造这个式子的因子是胡乱猜测得来的吗？或者是暴力枚举？
 
 [^12]: (伯努利分布中) $y_i$ 要么为 $0$ ，要么为 $1$ 。
 [^13]: 二项分布(binomial distribution)用以描述 $N$ 次独立的伯努利实验中有 $m$ 次成功(即$x = 1$)的概率，其中每次伯努利实验成功的概率为 $\mu \in [0, 1]$ 。当 $N = 1$ 时，二项分布退化为伯努利分布。
+
+[^14]: To avoid this problem(that using simple linear regression to predict the probability of binary classes or multiple classes would result in values beyond [0, 1]), we must model $p(X)$ using a function that gives outputs between $0$ and $1$ for all values of $X$. Many functions meet this description. In logistic regression, we use the *logistic function* : $p(X)=\frac{\exp(\beta_0 + \beta_1 X)}{1 + \exp(\beta_0 + \beta_1 X)}$. From book 'An Introduction to Statistical learning', p.132.
+[^15]: And where does this *logistic function* come from, how come the equation form? It rooted in the *chaos theory* with another form of $[A] x_{t+1} = k x_t \cdot (1-x_t)$, where $x_t$ is the population of a certain species at generation $t$; while $x_{t+1}$ is the population of a certain species at the next generation. In Wikipedia it is $[B] f(x) = {L \over {1 + \exp(-k(x-x_0))}}$. That equation $[B]$ comes from a **differential** version of $[A]$, here is how: Subtract $x_t$ to the LHS and RHS of $[A]$ to get: $x_{t+1} - x_t = k x_t(1-x_t) - k{1 \over k}x_t \Rightarrow \frac{x_{t+1} - x_t}{\Delta{t}}=k'x_t(1 - Lx_t)\ \text{with}\ L :=1+{1 \over k}$. Which is analogous to $[A]$, and one being discrete, the other continuous. From [here](https://math.stackexchange.com/questions/3328730/logistic-function-where-does-it-come-from). 
