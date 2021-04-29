@@ -359,7 +359,7 @@ $$
 
 
 
-## 随机森林(Random Forest)
+## 集成学习(Ensemble)
 
 根据个体学习器的生成方式，目前集成学习[^17]方法大致可分为两大类，
 
@@ -376,9 +376,9 @@ $$
 
 
 
-### BAGGING (Bootstrap AGGregatING)
+### BAGGING
 
-Bagging 是并行式集成学习方法最著名的代表。从名字即可看出，它直接基于自助采样法[^19]。因此，我们知道初始训练集中约有 $63.2\%$ 的样本出现在采样集中。我们可以采样出 $T$ 个含 $m$ 个训练样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合。这就是Bagging的基本流程。
+Bagging (Bootstrap AGGregatING) 是并行式集成学习方法最著名的代表。从名字即可看出，它直接基于自助采样法[^19]。因此，我们知道初始训练集中约有 $63.2\%$ 的样本出现在采样集中。我们可以采样出 $T$ 个含 $m$ 个训练样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合。这就是Bagging的基本流程。
 
 在对预测输出进行结合时，Bagging通常对分类任务使用简单投票法，对回归任务采用简单平均法。
 
@@ -402,7 +402,7 @@ Bagging 算法
 
 3: **end for**
 
-**输出**: $H(x) = argmax_{(y \in \mathcal{Y})} \sum^T_{t=1} \mathbf{I}(h_t(x) = y)$
+**输出**: $H(x) = \text{argmax}_{(y \in \mathcal{Y})} \sum^T_{t=1} \mathbf{I}(h_t(x) = y)$
 
 ---
 
@@ -427,7 +427,7 @@ Bagging 算法
 >
 > Generally, the net result is that the ensemble has a similar bias but a lower variance than single predictor trained on the original train set.
 
-### 随机森林 RF
+#### 随机森林 RF
 
 随机森林是Bagging的一个扩展变体。RF在以决策树为基学习器构建Bagging集成的基础上，进一步在决策树的训练过程中引入了随机属性选择。具体来说，传统决策树在选择划分属性时是在当前结点的属性集（假定有 $d$ 个属性）中选择一个最优属性；而在 RF 中，对基决策树的每个结点，先从该结点的属性集中随机选择一个包含 $k$ 个属性的子集，然后再从这个子集中选择一个最优属性用于划分。这里的参数 $k$ 控制了随机性的引入程度：
 
@@ -466,6 +466,374 @@ Bagging 算法
 
 ### BOOSTING
 
+> from 《A Gentle Introduction to Gradient Boosting》, chengli@ccs.neu.edu
+
+**What is Gradient Boosting
+
+```html
+<p style="text-align: center;color=green;font-size=20">
+    Gradient Boosting = Gradient Descent + Boosting
+</p>
+```
+
+#### AdaBoost
+
+![adaboost](./images/adaboost.png)
+
+AdaBoost training:
+
+- Fit an additive model (ensemble) $\sum_t \rho_t h_t(x)$ in a forward stage-wise manner.
+- In each stage, introduce a weak learner to compensate the *shortcomings* of existing weak learners.
+- In AdaBoost, *shortcomings* are identified by high-weight data points.
+
+
+$$
+H(x) = \sum_t \rho_t h_t(x)
+$$
+![adaboost](./images/adaboost2.png)
+
+```html
+<p style="text-align: center">
+    Figure: AdaBoost. Source: Figure 1.2 of [Schapire and Freund, 2012]
+</p>
+```
+
+#### Gradient Boosting
+
+- Fit an additive model (ensemble) $\sum_t \rho_t h_t(x)$ in a forward stage-wise manner.
+- In each stage, introduce a weak learner to compensate the *shortcomings* of existing weak learners.
+- In Gradient Boosting, *shortcomings* are identified by **gradients**. (Recall that**hight-weight** data points for adaboost)
+- Both high-weight data points and gradients tell us how to improve our model.
+
+**AdaBoost && Gradient Boosting**
+
+- Invent Adaboost, the rst successful boosting algorithm
+  [Freund et al., 1996, Freund and Schapire, 1997]
+
+- Formulate Adaboost as gradient descent with a special loss
+  function[Breiman et al., 1998, Breiman, 1999]
+- Generalize Adaboost to Gradient Boosting in order to handle
+  a variety of loss functions
+  [Friedman et al., 2000, Friedman, 2001]
+
+#### Gradient Boosting for Regression
+
+Given $D = \{(x_1,y_1), (x_2,y_2), \ldots, (x_n,y_n)\}$, and the task is to fit a model $F(x)$ to minimize square loss.
+
+Suppose your friend wants to help you and gives you a model $F$. You check his model and find that the model is good but not perfect. There are some mistakes: $F(x_1)=0.8$, while $y_1=0.9$, $F(x_2)=1.8$, while $y_2=1.9$, and so on. How can you improve this model? With following rules:
+
+- You are not allowed to remove anything from $F$ or change any parameter in $F$.
+- You can add an additional model (regression tree) $h$ to $F$, so the new prediction will be $F(x) + h(x)$.
+
+**Simple solution:**
+
+You wish to improve the model such that
+$$
+\begin{eqnarray}
+	F(x_1) + h(x_1) &=& y_1 \\
+    F(x_2) + h(x_2) &=& y_2 \\
+    \cdots \\
+    F(x_n) + h(x_n) &=& y_n \\
+\end{eqnarray}
+$$
+
+
+Or equivalently, you wish
+$$
+\begin{eqnarray}
+	h(x_1) &=& y_1 - F(x_1) \\
+    h(x_2) &=& y_2 - F(x_2) \\
+    \cdots \\
+    h(x_n) &=& y_n - F(x_n) \\
+\end{eqnarray}
+$$
+Can any regression tree $h$ achieve this goal prefectly? Maybe not.
+
+But some regression tree might be able to do this approximately. But how?
+
+Just fit a regression tree $h$ to the **residuals**[^23] data :
+
+$(x_1,y_1 - F(x_1)), (x_2,y_2 - F(x_2)), \ldots, (x_n,y_n - F(x_n)),$
+
+which are the parts that existing model $F$ connot do well.
+
+The role of $h$ is to compensate the shortcoming of existing model $F$.
+
+If the the new model $F+h$ is still not satisfactory, we can add another regression tree $g$ to fit data:
+
+$(x_1,y_1 - F(x_1) - h(x_1)), (x_2,y_2 - F(x_2) - h(x_2)), \ldots, (x_n,y_n - F(x_n) - h(x_n)),$
+
+which are the parts that existing model $F+h$ connot do well.
+
+Repeat this process utill we are satisfied.
+
+Q: We are improving the predictions of training data, is the procedure also useful for test data?
+
+A: Yes! Because we are building a model, and the model can be applied to test data as well.
+
+Q: **How is this related to gradient descent?**
+
+#### Relationship to the Gradient Descent
+
+Minimize a function by moving in the opposite direction of the gradient.
+$$
+\theta_i := \theta_i - \rho{\partial{J} \over \partial{\theta_i}}
+$$
+![gd](./images/gradient_descent.png)
+
+Figure: Gradient Descent. Source: <http://en.wikipedia.org/wiki/Gradient_descent>
+
+Recall that the task is to minimize the square loss, the loss function
+$$
+L(y, F(x)) = {1 \over 2} (y - F(x))^2
+$$
+And we want to minimize
+$$
+J = \sum_i L(y_i, F(x_i))
+$$
+by adjusting $F(x_i), F(x_2), \ldots, F(x_n)$.
+
+Notice that $F(x_i), F(x_2), \ldots, F(x_n)$ are just some numbers. We can treat $F(x_i)$ as parameters and take derivatives
+$$
+\frac{\partial{J}}{\partial{F(x_i)}}
+= \frac{\partial{\sum_i L(y_i, F(x_i))}}{\partial{F(x_i)}}
+= \frac{\partial{L(y_i, F(x_i))}}{\partial{F(x_i)}}
+= F(x_i) - y_i
+$$
+So we can interpret residuals as negative gradients:
+$$
+y_i - F(x_i) = - \frac{\partial{J}}{\partial{F(x_i)}}.
+$$
+And we get:
+$$
+\begin{eqnarray}
+	F(x_i) &:=& F(x_i) + h(x_i) \\
+    F(x_i) &:=& F(x_i) + y_i - F(x_i) \\
+    F(x_i) &:=& F(x_i) - 1 \frac{\partial{J}}{\partial{F(x_i)}} \\
+\end{eqnarray}
+$$
+This is exactly how the gradients update iteratively when $\rho=1$:
+$$
+\theta_i := \theta_i - \rho{\partial{J} \over \partial{\theta_i}}
+$$
+For regression with **square loss**,
+$$
+\begin{eqnarray}
+\text{residual} &\Leftrightarrow& \text{negative gradient} \\
+\text{fit h to residual} &\Leftrightarrow& \text{fit h to negative gradient} \\
+\text{update F based on residual} &\Leftrightarrow& \text{update F based on negative gradient} \\
+\end{eqnarray}
+$$
+So we are actually updating our model using **gradient descent**!
+
+#### Loss Functions for Regression Problem
+
+Square loss is:
+
+1. Easy to deal with mathematically, while
+2. Not robust to outliers. 
+
+The consequence is that it pay too much attention to outliers, and try hard to incorporate outliers into the model, leads to degrade the overall performance.
+
+Other commomly use loss functions are:
+
+- Absolute loss (more robust to outliers):
+  $$
+  L(y, F) = |y - F|
+  $$
+  Negative gradient:
+  $$
+  - g(x_i)
+  = - \frac{\partial{L(y_i, F(x_i))}}{\partial{F(x_i)}}
+  = \text{sign}(y_i - F(x_i))
+  $$
+  
+
+- Huber loss (more robust to outliers):
+  $$
+  L(y, F) = \left\{ 
+  \begin{array}{ll}
+      {1 \over 2}(y - F)^2, &|y - F| \le \delta;& \\
+      \delta(|y - F| - {\delta \over 2}), &|y - F| > \delta;& \\
+  \end{array} \right.
+  $$
+  Negative gradient:
+  $$
+  \begin{eqnarray}
+  - g(x_i)
+  &=& - \frac{\partial{L(y_i, F(x_i))}}{\partial{F(x_i)}} \\
+  \\
+  &=& \left\{ 
+  \begin{array}{ll}
+      y_i - F(x_i), &|y_i - F(x_i)| \le \delta;& \\
+      \delta\ \text{sign}(y_i - F(x_i)), &|y_i - F(x_i)| > \delta;& \\
+  \end{array} \right.
+  \end{eqnarray}
+  $$
+  
+
+example:
+
+|           $y_i$           |  0.5  | 1.2  |   2   | $5^*$ |
+| :-----------------------: | :---: | :--: | :---: | :---: |
+|         $F(x_i)$          |  0.6  | 1.4  |  1.5  |  1.7  |
+|        Square loss        | 0.005 | 0.02 | 0.125 | 5.445 |
+|       Absolute loss       |  0.1  | 0.2  |  0.5  |  3.3  |
+| Huber loss ($\delta=0.5$) | 0.005 | 0.02 | 0.125 | 1.525 |
+
+#### Regression with loss function $L$: general procedure
+
+---
+
+Give any differentiable loss function $L$,
+
+start with an initial model, say $F(x) = \frac{\sum^n_{i=1} y_i}{n}$,
+
+iterate until converge:
+
+​	calculate negative gradients $- g(x_i) = - \frac{\partial{L(y_i, F(x_i))}}{\partial{F(x_i)}}$,
+
+​	fit a regression tree $h$ to negative gradients $-g(x_i)$,
+
+​	$F := F + \rho h$
+
+---
+
+In general, *negative gradients* not equal to *residuals*, and we should follow negative gradients rather than residuals because *negative gradient* pays less attention to outliers.
+
+#### Summary of the Section
+
+- Fit an additive model $F=\sum_t {\rho_t h_t}$ in a forward stage-wise manner.
+- In each stage, introduce a new regression tree $h$ to compensate the shortcomings of existing model.
+- The *shortcomings* are identified by negative gradients.
+- For any loss function, we can derive a gradient boosting algorithm.
+- Absolute loss and Huber loss are more robust to outliers than square loss.
+
+NOTE that the things not covered: 
+
+How to choose a proper learning rate for each gradient boosting algorithm. See [Friedman, 2001]
+
+---
+
+#### Gradient Boosting for Classification
+
+**Problem:**
+
+Recognize the given hand written capital letter. [dataset size: 20000 x 16](http://archive.ics.uci.edu/ml/datasets/Letter+Recognition)
+
+- Multi-class classification
+
+- 26 classes. A, B, ..., Z
+
+- features:
+
+  1 horizontal position of box;	 		9 mean y variance
+  2 vertical position of box;				 10 mean x y correlation
+  3 width of box; 								   11 mean of x * x * y
+  4 height of box;								   12 mean of x * y * y
+  5 total number on pixels;				  13 mean edge count left to right
+  6 mean x of on pixels in box;		    14 correlation of x-ege with y
+  7 mean y of on pixels in box;		    15 mean edge count bottom to top
+  8 mean x variance;							  16 correlation of y-ege with x
+
+- Feature Vector= (2; 1; 3; 1; 1; 8; 6; 6; 6; 6; 5; 9; 1; 7; 5; 10)
+  Label = G
+
+
+
+**Model:**
+
+- 26 score functions (our models): $F_A, F_B, \ldots, F_Z$.
+
+- $F_A(x)$ assigns a score for class A.
+
+- scores are used to calculate probabilities:
+  $$
+  \begin{eqnarray}
+  	P_A(x) &=& \frac{\exp(F_A(x))}{\sum^Z_{c=A}\exp(F_c(x))} \\
+  	\\
+      P_B(x) &=& \frac{\exp(F_B(x))}{\sum^Z_{c=A}\exp(F_c(x))} \\
+      \\
+      \cdots \\
+      \\
+      P_Z(x) &=& \frac{\exp(F_Z(x))}{\sum^Z_{c=A}\exp(F_c(x))} \\
+  \end{eqnarray}
+  $$
+
+- predicted label = class that has the highest probability.
+
+
+
+**Loss function for each data point:** step by step
+
+1. turn the label $y_i$ into a (true) probability distribution $Y_c(x_i)$,
+
+   For example: $y_5=\text{G}$,
+
+   $Y_A(x_5)=0, Y_B(x_5)=0, \ldots, Y_G(x_5)=1, \ldots, Y_Z(x_5)=0$
+
+2. calculate the predicted probability distribution $P_c(x_i)$ based on the current model $F_A, F_B, \ldots, F_Z$.
+
+   $P_A(x_5)=0.03, P_B(x_5)=0.05, \ldots, P_G(x_5)=0.3, \ldots, P_Z(x_5)=0.05$
+
+3. calculate the difference between the true probability distribution and the predicted distribution. One of the ways is to use KL-divergence to measure the difference.
+
+**The Goal:**
+
+- minimize the total loss (KL-divergence)
+- for each data point, we wish the predicted probability distribution to match the true probability distribution as closely as possible.
+- we achieve this goal by adjusting our models $F_A, F_B, \ldots, F_Z$.
+
+
+
+#### Gradient Boosting for classification: general procedure
+
+---
+
+start with initial models $F_A, F_B, \ldots, F_Z$.
+
+iterate until converge:
+
+​	calculate negative gradients for class A: $-g_A(x_i)= - \frac{\partial{L}}{\partial{F_A(x_i)}}$
+
+​	...
+
+​	calculate negative gradients for class Z: $-g_Z(x_i)= - \frac{\partial{L}}{\partial{F_Z(x_i)}}$
+
+​	fit a regression tree $h_A$ to negative gradients $-g_A(x_i)$
+
+​	...
+
+​	fit a regression tree $h_Z$ to negative gradients $-g_Z(x_i)$
+
+​	$F_A := F_A + \rho_A h_A$
+
+​	...
+
+​	$F_Z := F_Z + \rho_Z h_Z$
+
+---
+
+To be continue...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> from book 《Hands-onML》.
+>
 > Boosting (original called *hypothesis boosting*) refers to any Ensemble method that can combine several weak learners into a strong learner. The general idea most boosting methods is to train predictors sequentially, each trying to correct its predecessor. The most popular boosting methods by far are
 >
 > - AdaBoost (short for Adaptive Boosting) and
@@ -564,6 +932,8 @@ Bagging 算法
 
 
 
+
+
 [^17]: 集成学习(ensemble learning，a.k.a, multi-classifier system, committee-based learning)通过构建并结合多个学习器来完成学习任务。集成学习一般结构是，先产生一组 “个体学习器(individual learner)”，再用某种策略将它们结合起来。个体学习器通常由一个现有学习算法从训练数据产生，例如 C4.5决策树算法或BP神经网络算法等，此时，如果集成中只包含同种类型的个体学习器，如 “决策树集成”、“神经网络集成”等，则这样的集成是 “同质” 的(homogeneous)集成，同质集成中的个体学习器也称为 “基学习器(base learner)”，相应的学习算法称为 “基学习算法(base learning algorithm)”；反之，则是 “异质” 的(heterogenous)集成，这时个体学习器常称为 "组件学习器(component learner)" 或直接称为个体学习器。
 [^18]: Boosting 是一族可将弱学习器提升为强学习器的算法。这族算法的工作机制类似：先从初始训练集训练出一个机学习器，再根据基学习器的表现对训练样本分布进行调整，使得先前基学习器做错的训练样本在后续受到更多关注，然后基于调整后的样本分布来训练下一个基学习器；如此重复进行，直至学习器数目达到事先指定的值$T$，最终将这$T$个基学习器进行加权结合。
 
@@ -571,6 +941,10 @@ Bagging 算法
 [^20]: statistical mode: 众数。也就是频率最高的预测类别，与 hard voting classfifer 类似。
 [^21]: The `BaggingClassifier` class remains useful if you want a bag of something other than Decision Trees.
 [^22]: Finding the best possible threshold for each feature at every node is one of the most time-consuming tasks of growing a tree.
+
+[^23]: residual is the difference between the predicted and the ground true.
+
+
 
 
 
