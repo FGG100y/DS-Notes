@@ -468,13 +468,11 @@ Bagging 算法
 
 > from 《A Gentle Introduction to Gradient Boosting》, chengli@ccs.neu.edu
 
-**What is Gradient Boosting
+**What is Gradient Boosting**
 
-```html
 <p style="text-align: center;color=green;font-size=20">
     Gradient Boosting = Gradient Descent + Boosting
 </p>
-```
 
 #### AdaBoost
 
@@ -492,11 +490,9 @@ H(x) = \sum_t \rho_t h_t(x)
 $$
 ![adaboost](./images/adaboost2.png)
 
-```html
 <p style="text-align: center">
     Figure: AdaBoost. Source: Figure 1.2 of [Schapire and Freund, 2012]
 </p>
-```
 
 #### Gradient Boosting
 
@@ -648,7 +644,6 @@ Other commomly use loss functions are:
   = \text{sign}(y_i - F(x_i))
   $$
   
-
 - Huber loss (more robust to outliers):
   $$
   L(y, F) = \left\{ 
@@ -670,7 +665,6 @@ Other commomly use loss functions are:
   \end{array} \right.
   \end{eqnarray}
   $$
-  
 
 example:
 
@@ -727,14 +721,30 @@ Recognize the given hand written capital letter. [dataset size: 20000 x 16](http
 
 - features:
 
-  1 horizontal position of box;	 		9 mean y variance
-  2 vertical position of box;				 10 mean x y correlation
-  3 width of box; 								   11 mean of x * x * y
-  4 height of box;								   12 mean of x * y * y
-  5 total number on pixels;				  13 mean edge count left to right
-  6 mean x of on pixels in box;		    14 correlation of x-ege with y
-  7 mean y of on pixels in box;		    15 mean edge count bottom to top
-  8 mean x variance;							  16 correlation of y-ege with x
+  1 horizontal position of box;
+  2 vertical position of box;
+  3 width of box;
+  4 height of box;
+  5 total number on pixels;
+  6 mean x of on pixels in box;
+  7 mean y of on pixels in box;
+  8 mean x variance;
+
+  9 mean y variance；
+
+  10 mean x y correlation;
+
+  11 mean of x * x * y;
+
+  12 mean of x * y * y;
+
+  13 mean edge count left to right;
+
+  14 correlation of x-ege with y;
+
+  15 mean edge count bottom to top;
+
+  16 correlation of y-ege with x.
 
 - Feature Vector= (2; 1; 3; 1; 1; 8; 6; 6; 6; 6; 5; 9; 1; 7; 5; 10)
   Label = G
@@ -814,121 +824,17 @@ iterate until converge:
 
 ---
 
-To be continue...
+
+
+**Classification VS Regression**: The Differences
+
+- $F_A, F_B, \ldots, F_Z$ **vs** $F$
+- a matrix of parameters to optimize **vs** a column of parameters to optimize
+- a matrix of gradients **vs** a column of gradients
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-> from book 《Hands-onML》.
->
-> Boosting (original called *hypothesis boosting*) refers to any Ensemble method that can combine several weak learners into a strong learner. The general idea most boosting methods is to train predictors sequentially, each trying to correct its predecessor. The most popular boosting methods by far are
->
-> - AdaBoost (short for Adaptive Boosting) and
-> - Gradient Boosting.
->
-> **1. AdaBoost**
->
-> One way for a new predictor to correct its predecessor is to pay a bit more attention to the training instances that the predecessor underfitted. This results in new predictors focusing more and more on the hard case. This technique used by AdaBoost.
->
-> For example, when training an AdaBoost classifier, the algorithm first train a base classifier (such as a Decision Tree) and uses it to make predictions on the train set. The algorithm then increase the relative weight of misclassified training instances. Then it trains a second classifier, using the updated weights, and again makes predictions on the training set, updates the instance weights, and so on (see Figure 7-7).
->
-> ![adaboost](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_adaboost.png)
->
-> Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on their corresponding weighted training set.
->
-> There is one important drawback to this sequential learning technique: it cannot be parallelized (or only partially), since each predictor can only be trained after the previous predictor has ben trained and evaluated. As a result, it does not scale as well as bagging or pasting.
->
 > 
->
-> **2. Gradient Boosting** 
->
-> Just like AdaBoost, Gradient Boosting works by sequentially adding predictors to an ensemble, each one correcting its predecessor. However, instead of tweaking the instance weights at every iteration like AdaBoost does, this method tries to fit the new predictor to the *residual errors* made by the previous predictor.
->
-> ```python
-> # Gradient Tree Boosting for regression task,
-> # a.k.a., Gradient Boosted Regression Trees (GBRT)
-> from sklearn.tree import DecisionTreeRegressor
-> 
-> dtree_reg1 = DecisionTreeRegressor(max_depth=2)
-> dtree_reg1.fit(X, y)
-> # train a second regressor on the residual errors made by the previous predictor
-> y2 = y - dtree_reg1.predict(X)
-> dtree_reg2 = DecisionTreeRegressor(max_depth=2)
-> dtree_reg2.fit(X, y2)
-> # train a third regressor on the residual errors made by the previous predictor
-> y3 = y2 - dtree_reg2.predict(X)
-> dtree_reg3 = DecisionTreeRegressor(max_depth=2)
-> dtree_reg3.fit(X, y3)
-> # ensemble contains three trees which makes predictions on a new instance simply by adding up the predictions of all the trees
-> y_pred = sum(tree.predict(X_new) for tree in (dtree_reg1, dtree_reg2, dtree_reg3))
-> ```
->
-> A simpler way to train GBRT ensembles is to use sklearn `GradientBoostingRegressor` class. Much like the `RandomForestRegressor` class, it has hyperparameters to control the growth of Decision Trees.
->
-> ```python
-> from sklearn.ensemble import GradientBoostingRegressor
-> 
-> gbrt = GradientBoostingRegressor(max_depth=2,
->                                  n_estimators=3,
->                                  learning_rate=1.0
->                                 )
-> gbrt.fit(X, y)
-> ```
->
-> 
->
-> ![gbrt model fitting](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_gradient_boosting.png)
->
-> The `learning_rate` hyperparameter scales the contribution of each tree. 
->
-> If you set it to a low value, such as 0.1, you will need more trees in the ensemble to fit the training set, but the predictions will usually better. This is a regularization technique called **shrinkage**. In order to find the optimal number of trees, you can use early stopping which can simply implemented by setting`warm_start=True` :
->
-> ```python
-> import numpy as np
-> from sklearn.model_selection import train_test_split
-> from sklearn.metrics import mean_square_error
-> 
-> X_train, y_train, X_test, y_test = train_test_split(X, y)
-> gbrt = GradientBoostingRegressor(max_depth=2,
->                                  warm_start=True,
->                                 )
-> def early_stop_gbrt(model, n_estimators=200, n_rounds=5,
->                     train_data=(X_train, y_train),
->                     val_data=(X_test, y_test),
->                    ):
->     min_val_error = float("inf")
->     error_going_up = 0
->     for n in range(1, n_estimators):
->         model.n_estimators = n
->         model.fit(train_data)
->         y_pred = model.predict(val_data[0])
->         val_error = mean_square_error(val_data[1], y_pred)
->         if val_error < min_val_error:
->             min_val_error = val_error
->             error_going_up = 0
->         else:
->             error_going_up += 1
->             if error_going_up == n_round:
->                 break
->     return model
-> 
-> gbrt = early_stop_gbrt(gbrt)
-> ```
->
-> Note that there is an optimized implementation of Gradient Boosting out there called "XGBoost" which stands for Extreme Gradient Boosting,  it is a popular Python library aimed to be extremely fast, scalable, and portable.
 
 
 
@@ -1057,6 +963,110 @@ One way to handle this is to cluster features that are correlated and only keep 
 The `RandomForestClassifier` is trained using *bootstrap aggregation*, where each new tree is fit from a bootstrap sample of the training observations $z_i = (x_i, y_i)$. The out-of-bag (OOB) error is the average error for each $z_i$ calculated using predictions from the tress that do not contain $z_i$ in their respective bootstrap sample. This allows the `RandomForestClassifier` to be fit and validated whilst being trained.
 
 > By principle since it randomizes the variable selection during each tree split, it's not prone to overfit unlike other models. However if you want to use CV using nfolds in sklearn you can still use the concept of hold-out set such as `oob_score=True` which shows model performance with or without using CV.
+
+
+
+
+
+### Sklearn Boosting
+
+> from book 《Hands-onML》.
+>
+> Boosting (original called *hypothesis boosting*) refers to any Ensemble method that can combine several weak learners into a strong learner. The general idea most boosting methods is to train predictors sequentially, each trying to correct its predecessor. The most popular boosting methods by far are
+>
+> - AdaBoost (short for Adaptive Boosting) and
+> - Gradient Boosting.
+>
+> **1. AdaBoost**
+>
+> One way for a new predictor to correct its predecessor is to pay a bit more attention to the training instances that the predecessor underfitted. This results in new predictors focusing more and more on the hard case. This technique used by AdaBoost.
+>
+> For example, when training an AdaBoost classifier, the algorithm first train a base classifier (such as a Decision Tree) and uses it to make predictions on the train set. The algorithm then increase the relative weight of misclassified training instances. Then it trains a second classifier, using the updated weights, and again makes predictions on the training set, updates the instance weights, and so on (see Figure 7-7).
+>
+> ![adaboost](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_adaboost.png)
+>
+> Once all predictors are trained, the ensemble makes predictions very much like bagging or pasting, except that predictors have different weights depending on their overall accuracy on their corresponding weighted training set.
+>
+> There is one important drawback to this sequential learning technique: it cannot be parallelized (or only partially), since each predictor can only be trained after the previous predictor has ben trained and evaluated. As a result, it does not scale as well as bagging or pasting.
+>
+> 
+>
+> **2. Gradient Boosting** 
+>
+> Just like AdaBoost, Gradient Boosting works by sequentially adding predictors to an ensemble, each one correcting its predecessor. However, instead of tweaking the instance weights at every iteration like AdaBoost does, this method tries to fit the new predictor to the *residual errors* made by the previous predictor.
+>
+> ```python
+> # Gradient Tree Boosting for regression task,
+> # a.k.a., Gradient Boosted Regression Trees (GBRT)
+> from sklearn.tree import DecisionTreeRegressor
+> 
+> dtree_reg1 = DecisionTreeRegressor(max_depth=2)
+> dtree_reg1.fit(X, y)
+> # train a second regressor on the residual errors made by the previous predictor
+> y2 = y - dtree_reg1.predict(X)
+> dtree_reg2 = DecisionTreeRegressor(max_depth=2)
+> dtree_reg2.fit(X, y2)
+> # train a third regressor on the residual errors made by the previous predictor
+> y3 = y2 - dtree_reg2.predict(X)
+> dtree_reg3 = DecisionTreeRegressor(max_depth=2)
+> dtree_reg3.fit(X, y3)
+> # ensemble contains three trees which makes predictions on a new instance simply by adding up the predictions of all the trees
+> y_pred = sum(tree.predict(X_new) for tree in (dtree_reg1, dtree_reg2, dtree_reg3))
+> ```
+>
+> A simpler way to train GBRT ensembles is to use sklearn `GradientBoostingRegressor` class. Much like the `RandomForestRegressor` class, it has hyperparameters to control the growth of Decision Trees.
+>
+> ```python
+> from sklearn.ensemble import GradientBoostingRegressor
+> 
+> gbrt = GradientBoostingRegressor(max_depth=2,
+>                                  n_estimators=3,
+>                                  learning_rate=1.0
+>                                 )
+> gbrt.fit(X, y)
+> ```
+>
+> 
+>
+> ![gbrt model fitting](D:\JupyterNotebook\fmhPlayground\NotesDS\treeBasedModels\images\hands-onML_ensemble_gradient_boosting.png)
+>
+> The `learning_rate` hyperparameter scales the contribution of each tree. 
+>
+> If you set it to a low value, such as 0.1, you will need more trees in the ensemble to fit the training set, but the predictions will usually better. This is a regularization technique called **shrinkage**. In order to find the optimal number of trees, you can use early stopping which can simply implemented by setting`warm_start=True` :
+>
+> ```python
+> import numpy as np
+> from sklearn.model_selection import train_test_split
+> from sklearn.metrics import mean_square_error
+> 
+> X_train, y_train, X_test, y_test = train_test_split(X, y)
+> gbrt = GradientBoostingRegressor(max_depth=2,
+>                                  warm_start=True,
+>                                 )
+> def early_stop_gbrt(model, n_estimators=200, n_rounds=5,
+>                     train_data=(X_train, y_train),
+>                     val_data=(X_test, y_test),
+>                    ):
+>     min_val_error = float("inf")
+>     error_going_up = 0
+>     for n in range(1, n_estimators):
+>         model.n_estimators = n
+>         model.fit(train_data)
+>         y_pred = model.predict(val_data[0])
+>         val_error = mean_square_error(val_data[1], y_pred)
+>         if val_error < min_val_error:
+>             min_val_error = val_error
+>             error_going_up = 0
+>         else:
+>             error_going_up += 1
+>             if error_going_up == n_round:
+>                 break
+>     return model
+> 
+> gbrt = early_stop_gbrt(gbrt)
+> ```
+>
+> Note that there is an optimized implementation of Gradient Boosting out there called "XGBoost" which stands for Extreme Gradient Boosting,  it is a popular Python library aimed to be extremely fast, scalable, and portable.
 
 
 

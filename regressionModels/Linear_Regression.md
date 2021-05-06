@@ -11,7 +11,7 @@ online resources:
 
 * 统计学, David Freeman $et.al$ 著，魏宗舒 等译，中国统计出版社
 
-* 机器学习 (又叫作：西瓜书), 周志华 著
+* 机器学习 (又名：‘西瓜书’), 周志华 著
 
 * An Introduction to Statistical Learning, by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani
 
@@ -58,9 +58,10 @@ average \ weight + 0.40 \times (SD \ of \ weight) = 180 \ lb + 18 \ lb = 198 \ l
 $$
 The point (73 inches, 198 pounds) is marked by a cross in figure 1 ( and the points that are 2SD above (76 in, 216 lb) and below (64 in, 144 lb) the average of height as well). All the points (height, estimate for average weight) fall on the solid line shown in figure 1. This is the *regression line*. The line goes through the point of averages: men of average height should also be of average weight.
 
-<p style="text-align:center;color:lightblue;">
+<p style="text-align:center;color:blue;">
     The regression line for y on x estimates the average value for y corresponding to each value of x.
 </p>
+
 
 
 Along the regression line, associated with each increase of one SD in height there is an increase of only 0.40 SDs in weight. Remember where the 0.40 comes from. It is the correlation between height and weight. NOTE that: Two different SDs are involved here: the SD of $x$, to gauge change in $x$; and the SD of $y$, to gauge changes in $y$.
@@ -155,18 +156,18 @@ His income should be $\$30000 - \$25000 = \$5000$. That is the intercept (figure
 
 ---
 
-<p style="text-align:justify;color:lightblue;">
+<p style="text-align:justify;color:blue;">
     Associated with a unit increase in x there is some average change in y. The slope of the regression line estimates this change. The formula for the slope is
 </p>
-
 
 $$
 {r \times SD\ \text{of y} \over SD\ \text{of x}}
 $$
 
-<p style="text-align:justify;color:lightblue;">
+<p style="text-align:justify;color:blue;">
     The intercept of the regression line is just the predicted value for y when x is 0.
 </p>
+
 
 
 ---
@@ -179,10 +180,9 @@ which is called the *regression equation*. There is nothing new here. The regres
 
 The regression line becomes unreliable when you are far from the center of the data, so a *negative* intercept is not too disturbing (when the calculation results in some negative value which may seen absurd).
 
-<p style="text-align:justify;color:lightblue;">
+<p style="text-align:justify;color:blue;">
     If you run an observational study, the regression line only describes the data that you see. The line cannot be relied on for predicting the results of interventions.
 </p>
-
 
 
 
@@ -199,9 +199,10 @@ The second problem, how to move the line around to minimize the r.m.s error, was
 
 ---
 
-<p style="text-align:center;color:lightblue;">
+<p style="text-align:center;color:blue;">
     Among all lines, the one that makes the smallest r.m.s error in predicting y form x is the regression line.
 </p>
+
 ---
 
 > Recall that:
@@ -219,6 +220,8 @@ The second problem, how to move the line around to minimize the r.m.s error, was
 > where $r$ is the correlation coefficient between $x$ and $y$.
 
 For this reason, the regression line is often called *least squares line*: the errors are squared to compute the r.m.s error, and the regression line makes the r.m.s error as small as possible.
+
+
 
 $\color{Green}{ \text{Example}}$
 
@@ -692,7 +695,7 @@ x^* = x^{(0)} - H(f)(x^{(0)})^{-1} \nabla_x f(x^{(0)})
 $$
 When $f$ is a positive definite quadratic function, Newton's method consist of applying equation 4.12 once to jump to the minimum of the function directly. When $f$ is not truly quadratic but can be locally approximated as a positive definite quadratic, Newton's method consists of applying equation 4.12 multiple times. NOTE that Newton's method is only appropriate when the nearby critical point is a minimum (all the eigenvalues of the Hessian are positive), whereas gradient is not attracted to saddle points unless the gradient points toward them.
 
-## Part_II: Why that  Work
+## Part_II: Why that  Works
 
 ### Linear Regression as Maximum Likelihood
 
