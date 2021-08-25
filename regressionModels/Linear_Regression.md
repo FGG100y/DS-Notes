@@ -1,6 +1,5 @@
 [TOC]
 
-
 ```html
 **Important Note**:
 
@@ -11,11 +10,13 @@ online resources:
 
 * 统计学, David Freeman $et.al$ 著，魏宗舒 等译，中国统计出版社
 
-* 机器学习 (又名：‘西瓜书’), 周志华 著
+* 机器学习, 周志华 著 (大名鼎鼎的‘西瓜书’)
 
-* An Introduction to Statistical Learning, by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani
+* An Introduction to Statistical Learning, by Gareth James, Daniela Witten,
+    Trevor Hastie, and Robert Tibshirani
 
-* Deep Learning, a.k.a, the flower book, by Ian Goodfellow, Yoshua Bengio, and Aaron Courville
+* Deep Learning, a.k.a, the flower book, by Ian Goodfellow, Yoshua Bengio, and
+    Aaron Courville
 
 * Introduction to Machine Learning, Barnabas Poczos, Aarti Singh, CMU-10701
 
@@ -61,8 +62,6 @@ The point (73 inches, 198 pounds) is marked by a cross in figure 1 ( and the poi
 <p style="text-align:center;color:blue;">
     The regression line for y on x estimates the average value for y corresponding to each value of x.
 </p>
-
-
 
 Along the regression line, associated with each increase of one SD in height there is an increase of only 0.40 SDs in weight. Remember where the 0.40 comes from. It is the correlation between height and weight. NOTE that: Two different SDs are involved here: the SD of $x$, to gauge change in $x$; and the SD of $y$, to gauge changes in $y$.
 
@@ -168,8 +167,6 @@ $$
     The intercept of the regression line is just the predicted value for y when x is 0.
 </p>
 
-
-
 ---
 
 The equation of a line can be written in terms of the slope and intercept:
@@ -193,7 +190,7 @@ Sometimes the points on a scatter diagram seem to be following a line. The probl
 - First, define an average distance from the line to all the points.
 - Second, move the line around until this average distance is as small as possible.
 
-To be more specific, suppose the line will be used to predict $y$ from $x$. Then the error made at each point is the vertical distance from the point to the line. In statistics, the usual way to define the average distance is by taking the root-mean-square of the errors. This measure of average distance is called the *r.m.s error of the line*. (It was first proposed by Gauss)
+To be more specific, suppose the line will be used to predict $y$ from $x$. Then the error made at each point is the vertical distance from the point to the line (a.k.a, the **residual**, means the difference between the $i$th observed and the $i$th response that is predicted by linear model). In statistics, the usual way to define the average distance is by taking the root-mean-square of the errors. This measure of average distance is called the *r.m.s error of the line*. (It was first proposed by Gauss)
 
 The second problem, how to move the line around to minimize the r.m.s error, was also solved by Gauss:
 
@@ -209,21 +206,27 @@ The second problem, how to move the line around to minimize the r.m.s error, was
 >
 > The r.m.s error for regression says how far typical points are above or below the regression line.
 > $$
-> r.m.s\ error = \sqrt{\frac{1}{m} \sum^m_i (y_i - \hat{y_i})^2}
+> r.m.s\ error = \sqrt{\frac{1}{n} \sum^n_i (y_i - \hat{y_i})^2}
 > $$
-> where $m$ is the number of data points, $y_i$ the $i$-th actual value, $\hat{y_i}$ the corresponding predicted value.
+> where $n$ is the number of data points, $y_i$ the $i$-th actual value, $\hat{y_i}$ the corresponding predicted value.
 >
-> And the r.m.s error for the regression line of $y$ on $x$ can be figured as
+> And the r.m.s error for the regression line of $y$ on $x$ can also be figured as
 > $$
 > \sqrt{1 - r^2} \times SD_y
 > $$
-> where $r$ is the correlation coefficient between $x$ and $y$.
+> where $r$ is the correlation coefficient[^1] between $x$ and $y$.
 
 For this reason, the regression line is often called *least squares line*: the errors are squared to compute the r.m.s error, and the regression line makes the r.m.s error as small as possible.
 
+In other words, the least squares approaches choose $\beta_0$ (the intercept) and $\beta_1$ (the slope) to minimize the *residual sum of squares* (RSS) which is defined as
+$$
+RSS = e_1^2 + e_2^2 + \cdots + e_n^2 = \sum^n_{i=1} (y_i - \hat{y_i})^2
+$$
+where $e = y_i - \hat{y_i}$ is called the **residual**. Obviously, the r.m.s error is the root of the mean of RSS.
 
+Linear regression is a very simple approach for supervised learning. In particular, linear regression is a useful tool for predicting a quantitative response. Many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression.
 
-$\color{Green}{ \text{Example}}$
+$\color{Green}{\text{Example}}$
 
 According to Hooke's law, the amount of stretch is proportional to the weight $x$. The new length of the spring is
 $$
@@ -262,11 +265,16 @@ import numpy as np
 # X the weight data; y the length data
 X = np.array([0, 2, 4, 6, 8, 10])
 y = np.array([439.00, 439.12, 439.21, 439.31, 439.40, 439.50])
+
 # mean and Standard Deviation
+# ---------------------------
+# avg = sum(X) / len(X)
 mu_x = X.mean()
 mu_y = y.mean()
 print(f"The means of X and y: {mu_x, mu_y}")
 # The means of X and y: (5.0, 439.25666666666666)
+
+# std is the "r.m.s size of the deviation from the average"
 SD_x = X.std()
 SD_y = y.std()
 print(f"The SDs of X and y: {SD_x, SD_y}")
@@ -284,8 +292,7 @@ r = (X_standard_unit.dot(y_standard_unit)) / len(X_standard_unit)
 m_hat = (r * SD_y) / SD_x
 # m_hat = 0.0491428571428563
 
-# the intercept, this is the predicted length when weight is 0,
-# in other words, it should be 5 kg below average.
+# the intercept, this is the *predicted length* when weight is 0,
 b_hat = mu_y - (mu_x * m_hat)
 # b_hat = 439.0109523809524
 ```
@@ -298,8 +305,118 @@ The method of least squares and the regression method involve the same mathemati
 
 **A technical point:** The least squares estimate for the length of the spring under no load was 439.01 cm. This is a tiny bit longer than the measured length at no load (439.00 cm). A statistician might trust the least squares estimate over the measurement. Why? Because the least squares estimate takes advantage of all six measurements, not just once: some of the measurement error is likely to cancel out. Of course, the six measurements are tied together by a good theory -- Hooke’s law. Without the theory, the least squares estimate wouldn’t be worth much.
 
-[^1]: Convert each variable to standard units. The average of the products gives the correlation coefficient.
+[^1]: Convert each variable to standard units. The average of the products gives the correlation coefficient (may be more intuitively in the python code)
 [^2]: Associated with a unit increase in $x$ there is some average change in $y$. The slope of the regression line estimates this change. The formula for the slope is $\frac{r \times SD_y}{SD_x}$. And the intercept of the regression line is just the predicted value for $y$ when $x$ is $0$.
+
+
+
+### Assessing the Accuaracy of the Coefficient Estimates
+
+Assume that the *true* relationship (e.g., the Hooke’s law) between $X$ and $Y$ takes the form $Y = f(X) + \epsilon$ for some unknown function $f$, where $\epsilon$ is a mean-zero random error term.  If $f$ is to be approximated by a linear function, then we can write this relationship as
+$$
+Y = \beta_0 + \beta_1 X + \epsilon.
+$$
+This is the *population regression line*. Here $\beta_0$ is the intercept (the expected value of $Y$ when $X$ = 0) and the $\beta_1$ the slop (the average increase in $Y$ associated with a one-unit increase in $X$). The $\epsilon$ (error term, typically assumed to be independent of $X$) is a catch-all for what we miss with this simple model: the true relationship is probably not linear, there may be other variables that cause variation in $Y$, and there may be measurement error.
+
+The model of *population regression line* is the best linear approximation to the true relationship between $X$ and $Y$ (NOTE that the assumption of linearity is often a useful working model. However, it may be not true in reality). The true relationship is generally not known for real data, but the least squares line can always be computed using the cofficient estimation methods. A natural question is as follows: how accurate is the least square line as an estimate of the population regression line?
+
+The analogy between linear regression and estimation of the mean of a random variable is an apt one based on the concept of *bias*. If we use the sample mean $\hat{\mu}$ to estimate $\mu$, this estimate is *unbiased*, in the sense that on average, we expect $\hat{\mu}$ to equal $\mu$, if we could average a huge number of estimates of $\mu$ obtained from a huge number of sets of observations. Hence, an unbiased estimator does not *systematically* over- or under-estimate the true parameter. The property of unbiasedness holds for the least squares coefficient estimates as well: if we estimate $\beta_0$ and $\beta_1$ on the basis of a particular data set, then our estimates won't be exactly equal to $\beta_0$ and $\beta_1$. But if we could average the estimates obtained over a huge number of date sets, then the average would be spot on!
+
+So how far off will that single estimate of $\hat{\mu}$ be? In general, we answer this question by computing the *standard error* of $\hat{\mu}$, written as $SE(\hat{\mu})$. We have the well-known formula
+$$
+Var(\hat{\mu}) = SE(\hat{\mu})^2 = {\sigma^2 \over n},
+$$
+where $\sigma$ is the standard deviation of each of the realizations $y_i$ of $Y$. NOTE that this formula holds iff the $n$ observations are uncorrelated. To compute the standard errors associated with $\hat{\beta_0}$ and $\hat{\beta_1}$, we use the following formulas:
+$$
+SE(\hat{\beta_0})^2 =
+\sigma^2 [{1 \over n} + \frac{\bar{x}^2}{\sum^n_{i=1}(x_i - \bar{x})^2}],
+\
+SE(\hat{\beta_1})^2 =\frac{\sigma^2}{\sum^n_{i=1}(x_i - \bar{x})^2}
+$$
+where $\sigma^2 = Var(\epsilon)$. In general, $\sigma^2$ is not known, but can be estimated from the data. This estimate of $\sigma$ is known as the *residual standard error*, and is given by the formula
+$$
+\sigma = RSE = \sqrt{RSS / (n-2)}
+$$
+
+
+#### Confidence Interval
+
+Standard errors can be used to compute the *confidence intervals*. A 95% confidence interval is defined as a range of values such that with 95% probability, the range will contain the true unknown value of the parameters. The range is defined in terms of lower and upper limits computed from the sample of data.
+
+For linear regression, the 95% confidence interval for $\beta_1$ approximately takes the form
+$$
+\hat{\beta_1} \pm 2 \cdot SE(\hat{\beta_1}).
+$$
+That is, there is approximately a 95% chance the true value of $\beta_1$ would be in this range.
+
+Similarly, for $\beta_0$, its 95% confidence interval takes the form
+$$
+\hat{\beta_0} \pm 2 \cdot SE(\hat{\beta_0}).
+$$
+NOTE that here we make an assumption that the errors are Gaussian. And the factor of $2$ in the formula will vary slightly depending on the number of observations $n$ in the linear regression.
+
+#### Hypothesis tests
+
+Standard errors can also be used to perform *hypothesis tests* on the coefficients. The most common hypothesis test involves testing the *null hypothesis* of
+$$
+H_0 : \text{There is no relationship between X and Y}
+$$
+versus the *alternative hypothesis*
+$$
+H_a : \text{There is some relationship between X and Y}.
+$$
+Mathematically, this corresponds to testing
+$$
+H_0 : \beta_1 = 0
+$$
+versus
+$$
+H_a : \beta_1 \ne 0,
+$$
+since if $\beta_1 = 0$ then the linear regression model reduces to $Y = \beta_0 + \epsilon$, and $X$ is not associated with $Y$.
+
+To test the null hypothesis, we need to determine whether $\hat{\beta_1}$, our estimate for $\beta_1$, is sufficiently far from zero that we can be confident that $\beta_1$ is non-zero. How far is far enough? This is of course depends on the accuracy of $\hat{\beta_1}$ -- that is, it depends on $SE(\hat{\beta_1})$:
+
+- If $SE(\hat{\beta_1})$ is small, then even relatively small values of $\hat{\beta_1}$ may provide strong evidence that $\beta_1 \ne 0$;
+- if $SE(\hat{\beta_1})$ is large, then $\hat{\beta_1}$ must be large in absolute value in order for us to reject the null hypothesis.
+
+In practice, we compute a *t-statistic*, given by
+$$
+t = \frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})},
+$$
+which measures the number of standard deviations that $\hat{\beta_1}$ is away from $0$. 
+
+If there really is no relationship between $X$ and $Y$, then we expect that *t-statistic* will have a $t$-distribution with $n-2$ degrees of freedom. Consequently, it is a simple matter to compute the probability of observing any number equal to $|t|$ or larger in absolute value, assuming $\beta_1 = 0$. We call this probability the *p-value*.
+
+**p-value interpretation**
+
+Roughly speaking, we interpret the p-value as follows: a small p-value indicates that it is unlikely to observe such a substantial association between the predictor and the response due to chance, in the absence of any real relationship between $X$ and $Y$. Hence we *reject the null hypothesis*, and declare a relationship to exist between $X$ and $Y$, if the p-value is small enough. Typical p-value cutoffs for rejecting the null hypothesis are 5% or 1%, when $n = 30$, these correspond to *t-statistics* of around $2$, and $2.75$, respectively.
+
+### Assessing the Accuracy of the Model
+
+Once we have rejected the null hypothesis in favor of the altervative hypothesis, it is natrual to want to quantify *the extent to which the model fits the data*. The quality of a linear regression fit is typically assessed using two related quantities: the *residual standard error* ($RSE$) and the $R^2$ statistic.
+
+#### Residual Standard Error
+
+From the model $Y = \beta_0 + \beta_1 X + \epsilon$ that associated with each observation is an error term $\epsilon$. Due to the presence of these error terms, even if we knew the true regression line (i.e., $\beta$s were known), we would not be perfectly predict $Y$ from $X$. The $RSE$ is an estimate of the standard deviation of $\epsilon$. Roughly speaking, it is the average amount that the response will deviate from the true regression line. It is computed using the formula
+$$
+RSE
+= \sqrt{{1 \over n-2} RSS}
+= \sqrt{{1 \over n-2} \sum^n_{i=1}(y_i - \hat{y_i})^2}.
+$$
+NOTE that $RSE$ is slightly different from *r.m.s error* which the latter using the number of all samples ($n$) as denominator while the former using $n-2$.
+
+The $RSE$ is considered a measure of the *lack of fit* of the model to the data. The smaller $RSE$ the better the model fitted to the data.
+
+#### $R^2$ Statistic
+
+The $RSE$ provides an absolute measure of lack of fit of the model to the data. But since it is measured in the units of $Y$, it is not always clear what consititues a good $RSE$. The $R^2$ statistic provides an alternative measure of fit. It takes the form of a *proportion*, the proportion of variance explained, and so it always takes on a value between $0$ and $1$, and is independent of the scale of $Y$.
+
+To calculate $R^2$, we use the formula
+$$
+R^2 = \frac{TSS - RSS}{TSS} = 1 - \frac{RSS}{TSS}
+$$
+where $TSS = \sum(y_i - \bar{y})^2$ is the *total sum of squares*. Hence $R^2$ measures the *proportion of variability in $Y$ that can be explained using $X$*.
 
 
 
@@ -310,15 +427,15 @@ Simple linear regression[^3] is a useful approach for predicting a response on t
 Instead of fitting a separate simple linear regression model for each predictor, a better approach is to extend the simple linear regression model[^5] so that it can directly accommodate multiple predictors. We can do this by giving each predictor a separate slope coefficient in a single model. In general, suppose we have $p$ distinct predictors. Then the multiple linear regression model takes the form
 $$
 \tag{3.19}
-\label{eq:mlr}
+\label{mlr}
 Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots +  + \beta_p X_p + \epsilon
 $$
 where $X_j$ represents the $j$-th predictor and $\beta_j$ quantifies the association between that variable and the response. We interpret $\beta_j$ as the *average* effect on $Y$ of a unit increase in $X_j$, **holding all other predictors fixed**[^6].
 
-As was the case in the simple linear regression setting, the regression coefficients $\beta_0, \beta_1, \ldots, \beta_p$ in ($\ref{eq:mlr}$) are unknown, and must be estimated. Given estimates $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$, we can make predictions using the formula
+As was the case in the simple linear regression setting, the regression coefficients $\beta_0, \beta_1, \ldots, \beta_p$ in ($\ref{mlr}$) are unknown, and must be estimated. Given estimates $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$, we can make predictions using the formula
 $$
 \tag{3.21}
-\label{eq:mlrpred}
+\label{mlrpred}
 \hat{y} = \hat{\beta_0} + \hat{\beta_1} x_1 + \hat{\beta_2} x_2 + \cdots  + \hat{\beta_p} x_p.
 $$
 Then parameters are estimated using the same **least squares** approach that we saw in the context of simple linear regression. We choose $\beta_0, \beta_1, \ldots, \beta_p$ to minimize the **sum of squared residuals**
@@ -326,11 +443,11 @@ $$
 \begin{eqnarray}
 RSS 
 &=& \sum^n_{i=1}(y_i - \hat{y}_i)^2 \\
-\tag{3.22} \label{eq:rss}
+\tag{3.22} \label{rss}
 &=& \sum^n_{i=1} \big( y_i - (\hat{\beta_0} + \hat{\beta_1} x_1 + \hat{\beta_2} x_2 + \cdots  + \hat{\beta_p} x_p) \big)^2
 \end{eqnarray}
 $$
-The values $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$ that minimize ($\ref{eq:rss}$) are the multiple least squares regression coefficient estimates. Unlike the simple linear regression coefficient estimation (the Python code block in previous section), the multiple regression coefficient estimates have somewhat complicated forms that are most easily represented using matrix algebra (see detail in section of Normal equation).
+The values $\hat{\beta_0}, \hat{\beta_1}, \ldots, \hat{\beta_p}$ that minimize ($\ref{rss}$) are the multiple least squares regression coefficient estimates. Unlike the simple linear regression coefficient estimation (the Python code block in previous section), the multiple regression coefficient estimates have somewhat complicated forms that are most easily represented using matrix algebra (see detail in section of Normal equation).
 
 When we perform multiple linear regression, we usually are interested in answering a few important questions.
 
@@ -383,10 +500,10 @@ H_0 = \beta_{p-q+1} = \beta_{p-q+2} = \cdots = \beta_{p} = 0,
 $$
 where for convenience we have put the variables chosen for omission at the end of the list. In this case we fit a second model that uses all the variables except those last $q$. Suppose that the residual sum of squares for that model is $RSS_0$. Then the appropriate F-statistic is
 $$
-\tag{3.24} \label{eq:ftest2}
+\tag{3.24} \label{ftest2}
 F = \frac{(RSS_0 - RSS) / q}{RSS / (n - p -1)}.
 $$
-For each individual predictor a t-statistic and a p-value can be obtain, these statistics provide information about whether each individual predictor is related to the response, after adjusting for the other predictors. It turns out that each of these are exactly equivalent to the F-test that omits that single variable from the model, leaving all the others in (means $q=1$ in equation $\ref{eq:ftest2}$).  So it reports the *partial effect* of adding that variable to the model.
+For each individual predictor a t-statistic and a p-value can be obtain, these statistics provide information about whether each individual predictor is related to the response, after adjusting for the other predictors. It turns out that each of these are exactly equivalent to the F-test that omits that single variable from the model, leaving all the others in (means $q=1$ in equation $\ref{ftest2}$).  So it reports the *partial effect* of adding that variable to the model.
 
 Given these individual p-values for each variable, why do we need to look at the over F-statistic? After all, it seems likely that if any one of the p-values for the individual variables is very small, then *at least one of the predictors is related to the response*. However, this logic is flawed, especially when the number of predictors $p$ is large.
 
@@ -397,10 +514,6 @@ Hence, if we use individual t-statistic and the associated p-value in order to c
 However, the F-statistic does not suffer from this problem because it adjusts for the number of predictors. If $H_0$ is true, there is only a 5% chance that the F-statistic will result in a p-value below 0.05, regardless of the number of predictors or the number of observations.
 
 Note that when $p$ is larger than $n$, we cannot even fit the multiple linear regression model using least squares. Less flexible least squares models, such as forward stepwise selection, ridge regression, lasso regression and principal components regression, are particular useful for performing regression in the high-dimensional setting.
-
-> $\color{Red}{TODO:}$ this need a separate section to tell the whole story.
->
-> **About p-value and the normalization approximation**
 
 #### Two: Deciding on Important Variable
 
@@ -432,7 +545,7 @@ R^2
 
 \end{eqnarray}
 $$
-where ($\bar{y} = {1 \over n} \sum^n_{i=1} y_i$) is the sample mean, $\hat{y}$ is defined in ($\ref{eq:mlrpred}$).
+where ($\bar{y} = {1 \over n} \sum^n_{i=1} y_i$) is the sample mean, $\hat{y}$ is defined in ($\ref{mlrpred}$).
 
 An $R^2$ value close to 1 indicates that the model explains a large portion of the variance in the response variable. It turns out that $R^2$ will always increase when more variables are added to the model, even they are only weakly associated with the response. This is due to the fact that with more variable to the least squares equations must allow us to fit the training data more accurately (though not necessarily the testing data, a.k.a., over fitting).
 
@@ -443,13 +556,67 @@ RSE = \sqrt{{1 \over {n - p - 1}} RSS}
 $$
 Thus model with more variables can have higher $RSE$ if the decrease in $RSS$ is small relative to the increase in $p$.
 
+##### Adjusted $R^2$ [(From wiki)](https://en.wikipedia.org/wiki/Coefficient_of_determination#Adjusted_R2)
+
+The use of an adjusted $R^2$ (one common notation is $\bar{R}^2$; another is $R_{adj}^2$) is an attempt to account for the phenomenon of the $R^2$ automatically and spuriously increasing when extra explanatory variables are added to the model. There are many different ways of adjusting, by far the most used one, to the point that it is typically just referred to as *adjusted $R^2$*, is the correction prosposed by Mordecai Ezekiel, and adjusted $R^2$ is defined as
+$$
+\bar{R}^2 = 1 - (1 - R^2){n-1 \over n-p-1}
+$$
+where $p$ is the total number of explantory variables in the model (not including the constant term), and $n$ is the sample size. It can also be written as
+$$
+\bar{R}^2 = 1 - \frac{RSS / df_e}{TSS / df_t}
+$$
+where $df_t$ is the *degrees of freedom* $n-1$ of the estimate of the population variance of the dependent variable, and the $df_e$ is the degrees of freedom $n-p-1$ of the estimate of the underlying population error variance.
+
+The adjusted $R^2$ can be negative, and its value will always be less than or equal to that of $R^2$. Unlike $R^2$, the adjusted $R^2$ increases only when the increase in $R^2$ (due to the inclusion of a new variable) is more than one would expect to see by chance. If a set of explanatory variables with a predtermined hierarchy of importance are introduced into a regression one at a time, with the adjusted $R^2$ computed each time, the level at which adjusted $R^2$ reaches a maximum, and decreases afterward, would be the regression with ideal combination of having the best fit without excess/unnecessary terms.
+
+> degrees of freedom [(From wiki)](https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics))
+>
+> The number of *degrees of freedom* is the number of values in the final calculation of a statistic that are free to vary.
+>
+> Estimates of statistical parameters can be based upon different amounts of information or data. The number of independent pieces of information that go into the estimate of a parameter are called the degrees of freedom.
+>
+> Mathematically, degrees of freedom is the number of dimensions of the domain of a random vector, or essentially the number of "free" components (how many components need to be know before the vector is fully determined).
+>
+> Suppose we have a sample of independent normally distributed observations, $\{X_1, X_2, \ldots, X_n\}$. This can be represented as an n-dimensional random vector:
+>
+> $X^T$. Since this random vector can lie anywhere in n-dimensional space, it has $n$ degrees of freedom.
+>
+> Now let $\bar{X}$ be the sample mean. The random vector can be decomposed as the sum of the sample mean plus a vector of residuals:
+> $$
+> \left( \begin{array}{c}
+>     X_{1} \\
+>     \vdots \\
+>     X_{n} \\
+> \end{array} \right)
+> 
+> = 
+> \bar{X} \cdot
+> \left( \begin{array}{c}
+>     1 \\
+>     \vdots \\
+>     1 \\
+> \end{array} \right)
+> 
+> +
+> 
+> \left( \begin{array}{c}
+>     X_{1} - \bar{X} \\
+>     \vdots \\
+>     X_{n} - \bar{X}\\
+> \end{array} \right).
+> $$
+> The first vector on the right-hand side is constrained to be a multiple of the vector of $1$'s, and the only free quantity is $\bar{X}$. It therefore has only one degree of freedom.
+>
+> The second vector is constrained by the relation $\sum(X_i - \bar{X}) = 0$. The first $n-1$ components of this vector can be anything. However, once you know the first $n-1$ components, the constraint tells you the value of the $n$th component. Therefore, this vector has $n-1$ degrees of freedom.
+
 #### Four: Prediction
 
-Once we have fit the multiple regression model, it is straightforward to apply the fitted model $\hat{y} = \hat{f}(X) = \hat{\beta} X$ (a more verbose version see $\ref{eq:mlrpred}$) in order to predict the response based on the values of the predictors. However, there are three sorts of uncertainty associated with this prediction.
+Once we have fit the multiple regression model, it is straightforward to apply the fitted model $\hat{y} = \hat{f}(X) = \hat{\beta} X$ (a more verbose version see $\ref{mlrpred}$) in order to predict the response based on the values of the predictors. However, there are three sorts of uncertainty associated with this prediction.
 
 1. The coefficient estimate is the least squares estimation of the true coefficient which is unknown. The inaccuracy in the coefficient estimates is related to the *reducible error*[^9]. We can compute a **confidence interval** in order to determine how close $\hat{y}$ will be to $f(X)$.
 2. In practice assuming a linear model for $f(X)$ is almost always an approximation of reality, so if the true pattern is non-linear, there is an additional reducible error called *model bias*.
-3. Even if we knew $f(X)$ -- that is, we knew the true value of $\beta$ -- the response value cannot be predicted perfectly, because of the random error $\epsilon$ in the model ($\ref{eq:mlrpred}$), this is the *irreducible error*.
+3. Even if we knew $f(X)$ -- that is, we knew the true value of $\beta$ -- the response value cannot be predicted perfectly, because of the random error $\epsilon$ in the model ($\ref{mlrpred}$), this is the *irreducible error*.
 
 
 
@@ -470,8 +637,6 @@ Once we have fit the multiple regression model, it is straightforward to apply t
 Linear regression is of course an extremely simple and limited learning algorithm, but it provides an example of how a learning algorithm can work.
 
 ### Normal Equation
-
-* from the Deep Learning, a.k.a, the flower book
 
 The goal is to build a system that can take a vector $x \in \mathbb{R^n}$ as input and predict the value of a scalar $y \in \mathbb{R}$ as its output.  The output of linear regression is a linear function of the input. Let $\hat{y}$ be the value that our model predicts $y$ should take on. We define the output to be
 $$
@@ -599,17 +764,17 @@ Algorithm 4.1 An algorithm to minimize $f(x) = \frac{1}{2}||Ax - b||^2_2$ with r
 
 
 
-> 关于梯度下降法(Gradient Descent) (来自：《西瓜书》)
+> 关于梯度下降法(Gradient Descent)
 >
 > 梯度下降法是一种常用的一阶(first-order)优化方法, 是求解无约束优化问题最简单,最经典的方法之一.
 >
 > 考虑无约束优化问题$min_x f(x)$,其中$f(x)$为连续可微函数.若能构造一个序列$x^0, x^1, x^2, \ldots$ 满足
 > $$
 > \tag{B.15}
-> \label{eq:ngd}
+> \label{eq_ngd}
 > f(x^{(t+1)}) < f(x^{(t)}), t = 0,1,2,\ldots
 > $$
-> 则不断执行该过程即可收敛到局部极小点.欲满足式($\ref{eq:ngd}$),根据泰勒展式有
+> 则不断执行该过程即可收敛到局部极小点.欲满足式($\ref{eq_ngd}$),根据泰勒展式有
 > $$
 > \tag{B.16}
 > f(x + \Delta x) \simeq f(x) + \Delta x^{\mathsf{T}} \nabla f(x)
@@ -625,7 +790,7 @@ Algorithm 4.1 An algorithm to minimize $f(x) = \frac{1}{2}||Ax - b||^2_2$ with r
 >
 > 当目标函数$f(x)$二阶连续可微时,可将式($B.16$)替换成更为精确的二阶泰勒展式,这样就得到了牛顿法(Newton's method).牛顿法是典型的二阶方法,其迭代轮数远小于梯度下降法.但牛顿法使用了二阶导数$\nabla^2 f(x)$ (second derivative),其每轮迭代中涉及到海森矩阵(Hessian matrix)的求逆,计算复杂度相当高,尤其在高维问题中几乎不可行.其次,牛顿法仅适用于附近点有局部极小点的情况(也就是,海森矩阵为正定矩阵,也就是海森矩阵所有的特征值都是正数),若附近点是鞍点(saddle point)则牛顿法失效.然而,梯度下降却不会被鞍点困住.若能以较低的计算代价寻找海森矩阵的近似逆矩阵,则可以显著降低计算开销,这就是拟牛顿法(quai-Newton method).
 
-### Newton's method 
+### Newton's method
 
 Sometimes we need to find all the partial derivatives of a function whose input and output are both vectors. The matrix containing all such partial derivatives is known as a **Jacobian matrix**. Specifically, if we have a function $f: \mathbb{R}^m \rightarrow \mathbb{R}^n$, then the Jacobian matrix $\mathbf{J} \in \mathbb{R}^{m \times n}$ of $f$ is defined such that $J_{i, j} = \frac{\partial}{\partial x_j}f(x)_i$.
 
@@ -695,7 +860,7 @@ x^* = x^{(0)} - H(f)(x^{(0)})^{-1} \nabla_x f(x^{(0)})
 $$
 When $f$ is a positive definite quadratic function, Newton's method consist of applying equation 4.12 once to jump to the minimum of the function directly. When $f$ is not truly quadratic but can be locally approximated as a positive definite quadratic, Newton's method consists of applying equation 4.12 multiple times. NOTE that Newton's method is only appropriate when the nearby critical point is a minimum (all the eigenvalues of the Hessian are positive), whereas gradient is not attracted to saddle points unless the gradient points toward them.
 
-## Part_II: Why that  Works
+## Part_II: Why that  Work
 
 ### Linear Regression as Maximum Likelihood
 
@@ -708,8 +873,8 @@ To derive the same linear regression algorithm we obtained before, we **define**
 Since the examples are assumed to be i.i.d., the conditional log-likelihood is given by 
 $$
 \begin{split}
-&\sum^m_{i=1} \text{log} \ p(y^{(i)}|x^{(i)}; \theta) \\
-&= -m \ \text{log} \ \sigma - \frac{m}{2} \text{log}(2 \pi) - \sum^m_{i=1} \frac{||\hat{y}^{(i)} - {y}^{(i)}||^2}{2 \sigma^2},
+&\sum^m_{i=1} log \ p(y^{(i)}|x^{(i)}; \theta) \\
+&= -m \ log \ \sigma - \frac{m}{2} log(2 \pi) - \sum^m_{i=1} \frac{||\hat{y}^{(i)} - {y}^{(i)}||^2}{2 \sigma^2},
 \end{split}
 $$
 where $\hat{y}^{(i)}$ is the output of the linear regression on the $i$-th input $x^{(i)}$ and m is the number of the training examples. Comparing the log-likelihood with the mean squared error,
@@ -770,11 +935,11 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 >
 > Maximum likelihood thus becomes minimization of the negative log-likelihood (NLL), or equivalently, minimization of the cross-entropy.
 >
-> 关于KL散度 (来自：《西瓜书》)
+> 关于KL散度
 >
 > KL散度(Kullback-Leibler divergence), 亦称相对熵(relative entropy)或信息散度(information divergence), 可用于度量两个概率分布之间的差异. 给定两个连续型概率分布$P$和$Q$, 二者之间的KL散度定义为
 > $$
-> \begin{equation} \label{eq:kld}
+> \begin{equation} \label{eq_kld}
 > \tag{C.34}
 > KL(P||Q) = \int^{\infin}_{-\infin}p(x)\text{log}\frac{p(x)}{q(x)}\text{d}x,
 > \end{equation}
@@ -793,7 +958,7 @@ This justifies the use of MSE as a maximum likelihood estimation procedure.
 > $$
 > 因此, KL散度不是一个度量(metric).
 >
-> 若将KL散度的定义($\ref{eq:kld}$)展开, 可得
+> 若将KL散度的定义($\ref{eq_kld}$)展开, 可得
 > $$
 > \begin{eqnarray}
 > 
@@ -1036,8 +1201,7 @@ $$
 \begin{eqnarray}
 \tag{L1}
 p(\theta | D) = \frac{p(D | \theta) \ p(\theta)}{p(D)} \\
-\\
-\tag{L2} \label{eq:map}
+\tag{L2} \label{eq_map}
 \Rightarrow p(\theta | D) \varpropto p(D | \theta) \ p(\theta)
 \end{eqnarray}
 $$
@@ -1088,7 +1252,7 @@ The only difference between $\theta_{MLE}$ and $\theta_{MAP}$ is that one assume
 
 > Recall that:
 >
-> With uniform prior $p(\theta) \varpropto 1$, according to $\ref{eq:map}$, the posterior $p(\theta | D) \varpropto p(D | \theta)$.
+> With uniform prior $p(\theta) \varpropto 1$, according to $\ref{eq_map}$, the posterior $p(\theta | D) \varpropto p(D | \theta)$.
 
 Suppose we have 5 coin flips all of which are heads,
 
